@@ -1,0 +1,33 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.moflon.gt.mosl.controlflow.language
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: org.moflon.gt.mosl.controlflow.language; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext,
+ org.eclipse.xtext.xbase,
+ org.eclipse.equinox.common;bundle-version="3.5.0",
+ org.moflon.gt.mosl.pattern.language,
+ org.eclipse.xtext.xbase.lib,
+ org.antlr.runtime,
+ org.eclipse.xtext.util,
+ org.eclipse.xtend.lib,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.common,
+ org.moflon.core.utilities,
+ org.moflon.sdm.compiler.eclipse,
+ org.moflon.ide.mosl.core
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.moflon.gt.mosl.controlflow.language,
+ org.moflon.gt.mosl.controlflow.language.serializer,
+ org.moflon.gt.mosl.controlflow.language.scoping,
+ org.moflon.gt.mosl.controlflow.language.generator,
+ org.moflon.gt.mosl.controlflow.language.services,
+ org.moflon.gt.mosl.controlflow.language.parser.antlr.internal,
+ org.moflon.gt.mosl.controlflow.language.validation,
+ org.moflon.gt.mosl.controlflow.language.parser.antlr,
+ org.moflon.gt.mosl.controlflow.language.moslControlFlow.util,
+ org.moflon.gt.mosl.controlflow.language.moslControlFlow,
+ org.moflon.gt.mosl.controlflow.language.moslControlFlow.impl
+Import-Package: org.apache.log4j

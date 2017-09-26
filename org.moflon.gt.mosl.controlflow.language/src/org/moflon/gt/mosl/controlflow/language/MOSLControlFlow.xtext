@@ -1,0 +1,118 @@
+grammar org.moflon.gt.mosl.controlflow.language.MOSLControlFlow with org.eclipse.xtext.common.Terminals
+
+generate moslControlFlow "http://www.moflon.org/gt/mosl/controlflow/language/MOSLControlFlow"
+import "http://www.moflon.org/gt/mosl/pattern/language/MOSLPattern" as moslPattern
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+GraphTransformationControlFlowFile: 
+	imports += Import*	
+	includedPatterns += IncludePattern*	
+	'package' name = QualifiedName	
+	eClasses += EClassDef*
+;
+
+EClassDef:
+	'class' name = [ecore::EClass | QualifiedName] '{'
+	operations += MethodDec*
+	'}'
+;
+
+MethodDec:
+	'operation' name = ID '(' (parameters+=MethodParameter)? (',' parameters+=MethodParameter)* ')' ':' (type=[ecore::EClassifier | QualifiedName] | 'void') ('{'
+		startStatement = Statement?
+	'}')?
+;
+
+CalledPatternParameter:(definingOV=ObjectVariableStatement) | (existingOV=[ObjectVariableStatement | QualifiedName]);
+
+ObjectVariableStatement:(op = Operator)? name = ID ':' type = [ecore::EClass | QualifiedName] (':=' assignment=[ObjectVariableStatement | QualifiedName])?;
+
+Statement: NextStatement | ReturnStatement;
+
+NextStatement:(PatternStatement | ConditionContainingStatement| ObjectVariableStatement ) (next = Statement)?;
+
+PatternStatement:'invoke' patternReference=PatternReference '('(parameters+=CalledPatternParameter)? (',' parameters+=CalledPatternParameter)*')';
+
+ConditionStatement:'if' '(' cond=Condition ')''{'
+	thenStartStatement = Statement
+	'}'
+	('else' '{'
+		elseStartStatement = Statement
+	'}')?
+;
+
+Condition:patternReference=PatternReference '('(parameters+=CalledPatternParameter)? (',' parameters+=CalledPatternParameter)*')';
+
+PatternReference: module = [moslPattern::PatternModule] '::' pattern = [moslPattern::PatternDef];
+
+ConditionContainingStatement:ConditionStatement | LoopStatement;
+
+LoopStatement:DoLoopStatement | WhileLoopStatement| ForLoopStatement;
+
+WhileLoopStatement: 'while''(' cond=Condition ')''{'
+		loopStartStatement = Statement
+	'}'
+;
+
+DoLoopStatement: 'do' '{'
+	loopStartStatement = Statement
+	'}' 'while' '(' cond=Condition ')'
+;
+
+ForLoopStatement: 'for' '('
+	cond = Condition
+	')''{'
+		loopStartStatement = Statement
+	'}'
+;
+
+ReturnStatement:{ReturnStatement} 'return' (returnObject=[ObjectVariableStatement])?;
+
+MethodParameter: name = ID ':' type=[ecore::EClassifier | QualifiedName];
+
+MethodTypeName returns ecore::EString: 'void' | QualifiedName;
+
+Operator:
+	value = OPERATOR_VALUE
+;
+
+
+/* ---------------- */
+/*    Auxiliaries   */
+/* ---------------- */
+
+IncludePattern: 'using' importURI=STRING;
+
+Import:
+	'import' name = STRING
+;
+
+Using:
+	'using' importedNamespace = QualifiedNameWithWildcard
+;
+
+terminal OPERATOR_VALUE: '++'| '!' | '--';
+
+terminal DECIMAL: INT '.' INT;
+
+LiteralValue:
+	(STRING | ('-')?INT | ('-')?DECIMAL | BOOL)
+;
+
+terminal BOOL:
+	'true' | 'false'
+;
+
+QualifiedNameWithWildcard:
+	QualifiedName '.*'
+;
+
+QualifiedName returns ecore::EString:
+	ID ('.' ID)*
+;
+
+
+// additional declarations for typing
+AbstractClass: EClassDef className=ID;
+

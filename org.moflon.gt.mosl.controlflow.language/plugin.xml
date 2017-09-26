@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<?eclipse version="3.0"?>
+<plugin>
+	<extension point="org.eclipse.emf.ecore.generated_package">
+		<package 
+			uri = "http://www.moflon.org/gt/mosl/controlflow/language/MOSLControlFlow"
+			class = "org.moflon.gt.mosl.controlflow.language.moslControlFlow.MoslControlFlowPackage"
+			genModel = "model/generated/MOSLControlFlow.genmodel" />
+	</extension>
+</plugin>

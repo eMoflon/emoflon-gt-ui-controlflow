@@ -1,0 +1,5 @@
+/bin/
+/src-gen/*
+/xtend-gen/*
+/model/generated/*
+plugin.xml_gen
