@@ -24,7 +24,7 @@ MethodDec:
 	'}')?
 ;
 
-CalledPatternParameter:(definingOV=ObjectVariableStatement) | (existingOV=[ObjectVariableStatement | QualifiedName]);
+CalledPatternParameter:(definingOV=ObjectVariableStatement) | (existingOV=[TypedElement | QualifiedName]);
 
 ObjectVariableStatement:(op = Operator)? name = ID ':' type = [ecore::EClass | QualifiedName] (':=' assignment=[ObjectVariableStatement | QualifiedName])?;
 
@@ -116,3 +116,4 @@ QualifiedName returns ecore::EString:
 // additional declarations for typing
 AbstractClass: EClassDef className=ID;
 
+TypedElement:ObjectVariableStatement | MethodParameter;
