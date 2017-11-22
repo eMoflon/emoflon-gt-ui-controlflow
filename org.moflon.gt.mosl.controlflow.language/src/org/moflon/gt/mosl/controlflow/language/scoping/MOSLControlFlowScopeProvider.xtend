@@ -19,21 +19,12 @@ import org.eclipse.emf.common.util.URI
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.EClassDef
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.ObjectVariableStatement
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.MethodParameter
-import org.moflon.gt.mosl.controlflow.language.moslControlFlow.PatternStatement
 import org.moflon.gt.mosl.pattern.language.moslPattern.GraphTransformationPatternFile
 import org.moflon.ide.mosl.core.scoping.utils.MOSLScopeUtil
 import java.util.HashMap
-import java.util.HashSet
-import org.eclipse.emf.ecore.util.EcoreUtil
-import java.io.File
-import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
-import org.moflon.gt.mosl.pattern.language.moslPattern.MoslPatternPackage
 import java.util.List
-import java.util.ArrayList
-import org.eclipse.xtext.EcoreUtil2
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.PatternReference
-import org.eclipse.xtext.scoping.Scopes
+import org.moflon.gt.mosl.controlflow.language.utils.MOSLGTControlFlowUtil
 
 /**
  * This class contains custom scoping description.
@@ -43,13 +34,12 @@ import org.eclipse.xtext.scoping.Scopes
  */
 class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider {
 	private ScopeProviderHelper<EPackage> scopeEPackageHelper = new ScopeProviderHelper()
-	private ScopeProviderHelper<GraphTransformationPatternFile> scopeGTPF = new ScopeProviderHelper()
 	private var resolvingCache = new HashMap<GraphTransformationControlFlowFile, List<GraphTransformationPatternFile>>();
 	
 	private Logger log = Logger.getLogger(MOSLControlFlowScopeProvider.getClass());
 	
 	override getScope(EObject context, EReference reference) {
-	resolvePatterns(context)	
+	MOSLGTControlFlowUtil.instance.resolvePatterns(context, resolvingCache, scopeEPackageHelper.resourceSet)	
 	try{
 		if(searchForEClass(context,reference)){
 			return getScopeByType(context, EClass)
@@ -57,14 +47,8 @@ class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider 
 		else if(searchForEClassifier(context,reference)){
 			return getScopeByType(context, EClassifier)
 		}
-//		else if(searchForCalledPatternParameter(context, reference))
-//			return getScopeForCalledParameter(CalledPatternParameter.cast(context))
 		else if(searchForPattern(context))
-			return getScopeByPattern(context,reference)
-//			return getScopeByType(context, PatternDef)
-//		else if(searchForEReferences(context, reference)){
-//			return getScopeByType(context, EReference)
-//		}
+			return MOSLGTControlFlowUtil.instance.getScopeByPattern(context,reference, resolvingCache)
 	}catch (CannotFindScopeException e){
 		log.debug("Cannot find Scope",e)
 	}
@@ -76,69 +60,8 @@ class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider 
 	}
 	
 	
-	def resolvePatterns(EObject context)
-	{
-		val cfFile = MOSLScopeUtil.instance.getRootObject(context, GraphTransformationControlFlowFile)
-		if(!resolvingCache.containsKey(cfFile)){
-			val cfFileRes = cfFile.eResource
-			val cfFileUri = cfFileRes.URI
-			val cfFileURIStringPrefix = cfFileUri.toString.split("/").filter[part | !part.endsWith(".mcf")].fold("", [l,r | l + r + "/"])
-			var patternUris = cfFile.includedPatterns.map[includedPattern | URI.createURI(cfFileURIStringPrefix+includedPattern.importURI)]
-			val resSet = scopeEPackageHelper.resourceSet
-			MoslPatternPackage.eINSTANCE.eClass
-			val patternFiles = patternUris.map[uri | MOSLScopeUtil.instance.getObjectFromResourceSet(uri, resSet, GraphTransformationPatternFile)]
-			patternFiles.filter[ptFile | ptFile.eIsProxy].forEach[ptFile | EcoreUtil.resolveAll(ptFile)]
-			resolvingCache.put(cfFile, patternFiles)
-		}
-	}
-//	def boolean searchForEReferences(EObject context, EReference reference) {
-//		return context instanceof LinkVariablePattern && reference.name.equals("type")
-//	}
-	
 	def boolean searchForPattern(EObject context) {
 		return context instanceof PatternReference
-	}
-	
-//	def IScope getScopeForCalledParameter(CalledPatternParameter cpp){
-//		var method = MethodDec.cast(cpp.eContainer)
-//		var candidates = getAllDefinitions(method)
-//		
-//		null 
-//		
-//	}
-//	
-//	def getAllDefinitions(MethodDec method){
-//		var stack = new Stack<Statement>()
-//		var candidates = new ArrayList<ObjectVariable>
-//		stack.push(method.startStatement)
-//		while(!stack.isEmpty){
-//			var statement = stack.pop
-//			if(statement instanceof NextStatement){
-//				stack.push(statement.next)
-//				if(statement instanceof ConditionStatement){
-//					stack.push(statement.elseStartStatement)
-//					stack.push(statement.thenStartStatement)
-//				}
-//				else if(statement instanceof LoopStatement){
-//					stack.push(statement.loopStartStatement)	
-//				}
-//				else if(statement instanceof PatternStatement){
-//					
-//				}				
-//			}				 
-//				
-//						
-//		}
-//		candidates
-//	}
-
-
-	def getScopeByPattern(EObject context, EReference reference) throws CannotFindScopeException{
-		var gtf = MOSLScopeUtil.instance.getRootObject(context, GraphTransformationControlFlowFile)
-		val patternFiles = resolvingCache.getOrDefault(gtf, new ArrayList())
-		val type = reference.EType
-		val candidates = patternFiles.map[ptFile | ptFile.eAllContents.filter[elem | elem.eClass === type].toList].flatten.toList
-		Scopes.scopeFor(candidates)
 	}
 	
 	def getScopeByType(EObject context, Class<? extends EObject> type)throws CannotFindScopeException{
