@@ -18,13 +18,14 @@ import org.moflon.gt.mosl.controlflow.language.moslControlFlow.GraphTransformati
 import org.eclipse.emf.common.util.URI
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.EClassDef
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.ObjectVariableStatement
-import org.moflon.gt.mosl.controlflow.language.moslControlFlow.MethodParameter
+
 import org.moflon.gt.mosl.pattern.language.moslPattern.GraphTransformationPatternFile
 import org.moflon.ide.mosl.core.scoping.utils.MOSLScopeUtil
 import java.util.HashMap
 import java.util.List
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.PatternReference
 import org.moflon.gt.mosl.controlflow.language.utils.MOSLGTControlFlowUtil
+import org.eclipse.emf.ecore.EParameter
 
 /**
  * This class contains custom scoping description.
@@ -78,6 +79,6 @@ class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider 
 	
 	def boolean searchForEClassifier(EObject context, EReference reference){
 		return context instanceof MethodDec ||  context instanceof ObjectVariableStatement 
-		|| (context instanceof MethodParameter && reference.name.equals("type"))
+		|| (context instanceof EParameter && reference.name.equals("eType"))
 	}
 }

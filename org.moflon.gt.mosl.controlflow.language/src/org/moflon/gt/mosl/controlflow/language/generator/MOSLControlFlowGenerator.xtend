@@ -13,13 +13,13 @@ import org.eclipse.xtext.generator.IGeneratorContext
  * 
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
  */
-class MOSLControlFlowGenerator extends AbstractGenerator {
+class MOSLControlFlowGenerator extends AbstractMOSLControlFlowGenerator {
 
-	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-//		fsa.generateFile('greetings.txt', 'People to greet: ' + 
-//			resource.allContents
-//				.filter(Greeting)
-//				.map[name]
-//				.join(', '))
-	}
+//	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
+////		fsa.generateFile('greetings.txt', 'People to greet: ' + 
+////			resource.allContents
+////				.filter(Greeting)
+////				.map[name]
+////				.join(', '))
+//	}
 }
