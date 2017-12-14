@@ -26,6 +26,7 @@ Workflow {
 		language = StandardLanguage {
 			name = "org.moflon.gt.mosl.controlflow.language.MOSLControlFlow"
 			referencedResource = "platform:/resource/org.moflon.gt.mosl.pattern.language/model/generated/MOSLPattern.genmodel"
+			referencedResource = "platform:/resource/org.eclipse.emf.ecore/model/Ecore.genmodel"
 			fileExtensions = "mcf"
 
 			serializer = {
