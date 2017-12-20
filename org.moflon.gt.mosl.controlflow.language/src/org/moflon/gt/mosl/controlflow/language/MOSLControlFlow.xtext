@@ -5,12 +5,22 @@ import "http://www.moflon.org/gt/mosl/pattern/language/MOSLPattern" as moslPatte
 
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
-GraphTransformationControlFlowFile: 
-	imports += Import*	
-	includedPatterns += IncludePattern*	
-	'package' name = QualifiedName	
+GraphTransformationControlFlowFile:
+	imports += Import*
+	includedPatterns += IncludePattern*
+	'package' name = QualifiedName
 	eClasses += EClassDef*
 ;
+
+// EMF Connections
+EPackage returns ecore::EPackage: GraphTransformationControlFlowFile ;
+
+ETypedElement returns ecore::ETypedElement :ObjectVariableStatement;
+
+
+EOperation returns ecore::EOperation:MethodDec;
+
+EParameter returns ecore::EParameter:MethodParameter;
 
 EClassDef:
 	'class' name = [ecore::EClass | QualifiedName] '{'
@@ -19,18 +29,18 @@ EClassDef:
 ;
 
 MethodDec:
-	'operation' name = ID '(' (parameters+=MethodParameter)? (',' parameters+=MethodParameter)* ')' ':' (type=[ecore::EClassifier | QualifiedName] | 'void') ('{'
+	'operation' name = ID '(' (eParameters+=MethodParameter)? (',' eParameters+=MethodParameter)* ')' ':' (eType=[ecore::EClassifier | QualifiedName] | 'void') ('{'
 		startStatement = Statement?
 	'}')?
 ;
 
-CalledPatternParameter:(definingOV=ObjectVariableStatement) | (existingOV=[TypedElement | QualifiedName]);
+CalledPatternParameter:object=[TypedElement | QualifiedName] | create= ObjectVariableStatement;
 
-ObjectVariableStatement:(op = Operator)? name = ID ':' type = [ecore::EClass | QualifiedName] (':=' assignment=[ObjectVariableStatement | QualifiedName])?;
+ObjectVariableStatement:(op = Operator)? name = ID ':' eType = [ecore::EClass | QualifiedName] (':=' assignment=[ObjectVariableStatement | QualifiedName])?;
 
 Statement: NextStatement | ReturnStatement;
 
-NextStatement:(PatternStatement | ConditionContainingStatement| ObjectVariableStatement ) (next = Statement)?;
+NextStatement:(PatternStatement | ConditionContainingStatement| ObjectVariableStatement| CallStatement ) (next = Statement)?;
 
 PatternStatement:'invoke' patternReference=PatternReference '('(parameters+=CalledPatternParameter)? (',' parameters+=CalledPatternParameter)*')';
 
@@ -41,6 +51,16 @@ ConditionStatement:'if' '(' cond=Condition ')''{'
 		elseStartStatement = Statement
 	'}')?
 ;
+
+CallStatement:OperationCallStatement | MethodCallStatement;
+
+MethodCallStatement:name = [MethodDec] '('(parameters+=CalledMethodParameter (',' parameters+=CalledMethodParameter)*)?')';
+
+OperationCallStatement:
+	object=[TypedElement] '.' call = [ecore::EOperation] '(' (parameters+=CalledMethodParameter (',' parameters+=CalledMethodParameter)*)? ')'
+;
+
+CalledMethodParameter:(object=[TypedElement | QualifiedName]) | create= ObjectVariableStatement;
 
 Condition:patternReference=PatternReference '('(parameters+=CalledPatternParameter)? (',' parameters+=CalledPatternParameter)*')';
 
@@ -69,7 +89,7 @@ ForLoopStatement: 'for' '('
 
 ReturnStatement:{ReturnStatement} 'return' (returnObject=[ObjectVariableStatement])?;
 
-MethodParameter: name = ID ':' type=[ecore::EClassifier | QualifiedName];
+MethodParameter: name = ID ':' eType=[ecore::EClassifier | QualifiedName];
 
 MethodTypeName returns ecore::EString: 'void' | QualifiedName;
 
@@ -112,8 +132,8 @@ QualifiedName returns ecore::EString:
 	ID ('.' ID)*
 ;
 
-
-// additional declarations for typing
-AbstractClass: EClassDef className=ID;
-
+//additional connections
 TypedElement:ObjectVariableStatement | MethodParameter;
+
+CalledParameter:CalledPatternParameter | CalledMethodParameter;
+
