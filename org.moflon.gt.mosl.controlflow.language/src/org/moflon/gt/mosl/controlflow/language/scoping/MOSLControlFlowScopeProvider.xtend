@@ -34,7 +34,7 @@ import org.eclipse.emf.ecore.EParameter
  * on how and when to use it.
  */
 class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider {
-	private ScopeProviderHelper<EPackage> scopeEPackageHelper = new ScopeProviderHelper()
+	private static ScopeProviderHelper<EPackage> scopeEPackageHelper = new ScopeProviderHelper()
 	private var resolvingCache = new HashMap<GraphTransformationControlFlowFile, List<GraphTransformationPatternFile>>();
 	
 	private Logger log = Logger.getLogger(MOSLControlFlowScopeProvider.getClass());
@@ -55,6 +55,10 @@ class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider 
 	}
 		super.getScope(context, reference);
 	}
+	
+	static def getScopeProviderHelper(){
+		scopeEPackageHelper
+	} 
 	
 	def boolean searchForCalledPatternParameter(EObject context, EReference reference) {
 		return context instanceof CalledPatternParameter;
