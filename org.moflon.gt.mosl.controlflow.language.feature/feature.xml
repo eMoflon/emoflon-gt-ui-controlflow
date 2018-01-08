@@ -1,23 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature id="org.moflon.gt.mosl.controlflow.language.feature"
-	label="MOSLControlFlow Feature "
-	version="1.0.0.qualifier">
-	<plugin
-			id="org.moflon.gt.mosl.controlflow.language"
-			download-size="0"
-			install-size="0"
-			version="0.0.0"
-			unpack="false"/>
-	<plugin
-			id="org.moflon.gt.mosl.controlflow.language.ide"
-			download-size="0"
-			install-size="0"
-			version="0.0.0"
-			unpack="false"/>
-	<plugin
-			id="org.moflon.gt.mosl.controlflow.language.ui"
-			download-size="0"
-			install-size="0"
-			version="0.0.0"
-			unpack="false"/>
+<feature
+      id="org.moflon.gt.mosl.controlflow.language.feature"
+      label="MOSL Control Flow Language Feature"
+      version="1.0.0.qualifier"
+      provider-name="eMoflon Developers"
+      plugin="org.moflon.core.branding">
+
+   <requires>
+      <import feature="org.moflon.ide.feature" version="2.32.0"/>
+   </requires>
+
+   <plugin
+         id="org.moflon.gt.mosl.controlflow.language"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.moflon.gt.mosl.controlflow.language.ide"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.moflon.gt.mosl.controlflow.language.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
