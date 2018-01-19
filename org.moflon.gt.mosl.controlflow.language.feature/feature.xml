@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.moflon.gt.mosl.controlflow.language.feature"
-      label="MOSLControlFlow Feature "
+      label="eMoflon MOSL Control Flow Specification Language Feature"
       version="1.0.0.qualifier">
 
    <requires>
