@@ -3,28 +3,29 @@
  */
 package org.moflon.gt.mosl.controlflow.language.scoping
 
-import java.util.HashMap
-import java.util.List
+import org.moflon.ide.mosl.core.scoping.ScopeProviderHelper
+import org.eclipse.emf.ecore.EPackage
 import org.apache.log4j.Logger
-import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.EParameter
-import org.eclipse.emf.ecore.EReference
-import org.moflon.codegen.eclipse.CodeGeneratorPlugin
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.CalledPatternParameter
-import org.moflon.gt.mosl.controlflow.language.moslControlFlow.EClassDef
-import org.moflon.gt.mosl.controlflow.language.moslControlFlow.GraphTransformationControlFlowFile
+import org.moflon.ide.mosl.core.exceptions.CannotFindScopeException
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.MethodDec
+import org.moflon.codegen.eclipse.CodeGeneratorPlugin
+import org.moflon.gt.mosl.controlflow.language.moslControlFlow.GraphTransformationControlFlowFile
+import org.eclipse.emf.common.util.URI
+import org.moflon.gt.mosl.controlflow.language.moslControlFlow.EClassDef
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.ObjectVariableStatement
+
+import org.moflon.gt.mosl.pattern.language.moslPattern.GraphTransformationPatternFile
+import org.moflon.ide.mosl.core.scoping.utils.MOSLScopeUtil
+import java.util.HashMap
+import java.util.List
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.PatternReference
 import org.moflon.gt.mosl.controlflow.language.utils.MOSLGTControlFlowUtil
-import org.moflon.gt.mosl.pattern.language.moslPattern.GraphTransformationPatternFile
-import org.moflon.ide.mosl.core.exceptions.CannotFindScopeException
-import org.moflon.ide.mosl.core.scoping.ScopeProviderHelper
-import org.moflon.ide.mosl.core.scoping.utils.MOSLScopeUtil
+import org.eclipse.emf.ecore.EParameter
 
 /**
  * This class contains custom scoping description.
@@ -33,7 +34,7 @@ import org.moflon.ide.mosl.core.scoping.utils.MOSLScopeUtil
  * on how and when to use it.
  */
 class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider {
-	private ScopeProviderHelper<EPackage> scopeEPackageHelper = new ScopeProviderHelper()
+	private static ScopeProviderHelper<EPackage> scopeEPackageHelper = new ScopeProviderHelper()
 	private var resolvingCache = new HashMap<GraphTransformationControlFlowFile, List<GraphTransformationPatternFile>>();
 
 	private Logger log = Logger.getLogger(MOSLControlFlowScopeProvider.getClass());
@@ -53,6 +54,10 @@ class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider 
 		log.debug("Cannot find Scope",e)
 	}
 		super.getScope(context, reference);
+	}
+
+	static def getScopeProviderHelper(){
+		scopeEPackageHelper
 	}
 
 	def boolean searchForCalledPatternParameter(EObject context, EReference reference) {
