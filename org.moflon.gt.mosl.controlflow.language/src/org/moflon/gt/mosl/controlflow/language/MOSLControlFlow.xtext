@@ -15,7 +15,7 @@ GraphTransformationControlFlowFile:
 // EMF Connections
 EPackage returns ecore::EPackage: GraphTransformationControlFlowFile ;
 
-ETypedElement returns ecore::ETypedElement :ObjectVariableStatement;
+ETypedElement returns ecore::ETypedElement:ObjectVariableStatement;
 
 
 EOperation returns ecore::EOperation:MethodDec;
@@ -133,7 +133,7 @@ QualifiedName returns ecore::EString:
 ;
 
 //additional connections
-TypedElement:ObjectVariableStatement | MethodParameter;
+TypedElement:(ObjectVariableStatement | MethodParameter);
 
 CalledParameter:CalledPatternParameter | CalledMethodParameter;
 

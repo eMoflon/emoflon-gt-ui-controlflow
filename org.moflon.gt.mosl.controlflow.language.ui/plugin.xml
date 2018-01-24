@@ -408,4 +408,15 @@
 			type="text">
 		</fileTypes>
 	</extension>
+ <extension
+       point="org.eclipse.ui.newWizards">
+    <wizard
+          category="org.moflon.gt.ide.ui.moslgt"
+          class="org.moflon.gt.mosl.controlflow.language.ui.wizards.NewControlFlowFileWizard"
+          icon="Resources/icon/controllflowIcon.png"
+          id="org.moflon.gt.mosl.controlflow.language.ui.controlflowwizard"
+          name="New Control Flow File"
+          project="false">
+    </wizard>
+ </extension>
 </plugin>

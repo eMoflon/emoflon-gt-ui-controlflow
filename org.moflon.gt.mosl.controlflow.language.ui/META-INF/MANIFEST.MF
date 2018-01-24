@@ -16,7 +16,10 @@ Require-Bundle: org.moflon.gt.mosl.controlflow.language,
  org.eclipse.compare,
  org.eclipse.xtext.builder,
  org.eclipse.xtend.lib;resolution:=optional,
- org.eclipse.xtext.xbase.lib
+ org.eclipse.xtext.xbase.lib,
+ org.moflon.gt.ide.ui,
+ org.moflon.ide.ui,
+ org.moflon.core.utilities
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.moflon.gt.mosl.controlflow.language.ui.internal,
