@@ -7,7 +7,7 @@ build:
     pull: true
 
   ci:
-    - mvn clean integration-test
+    - mvn clean compile integration-test
     # Publish JUnit test results
     - find . -path "*/target/*/TEST*.xml" -exec cp {} /root/src/github.com/eMoflon/emoflon-gt-ui-controlflow/shippable/testresults/ \;
    
