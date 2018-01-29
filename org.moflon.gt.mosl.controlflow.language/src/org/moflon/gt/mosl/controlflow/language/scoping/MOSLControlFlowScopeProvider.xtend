@@ -13,11 +13,11 @@ import org.eclipse.emf.ecore.EClassifier
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.CalledPatternParameter
 import org.moflon.ide.mosl.core.exceptions.CannotFindScopeException
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.MethodDec
-import org.moflon.codegen.eclipse.CodeGeneratorPlugin
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.GraphTransformationControlFlowFile
 import org.eclipse.emf.common.util.URI
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.EClassDef
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.ObjectVariableStatement
+import org.moflon.core.utilities.eMoflonEMFUtil
 
 import org.moflon.gt.mosl.pattern.language.moslPattern.GraphTransformationPatternFile
 import org.moflon.ide.mosl.core.scoping.utils.MOSLScopeUtil
@@ -71,7 +71,7 @@ class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider 
 
 	def getScopeByType(EObject context, Class<? extends EObject> type)throws CannotFindScopeException{
 		val set = scopeEPackageHelper.resourceSet
-		CodeGeneratorPlugin.createPluginToResourceMapping(set);
+		eMoflonEMFUtil.createPluginToResourceMapping(set);
 		var gtf = MOSLScopeUtil.instance.getRootObject(context, GraphTransformationControlFlowFile)//getGraphTransformationControlFlowFile(context)
 		var uris = gtf.imports.map[importValue | URI.createURI(importValue.name)];
 		return scopeEPackageHelper.createScope(uris, EPackage, type);
