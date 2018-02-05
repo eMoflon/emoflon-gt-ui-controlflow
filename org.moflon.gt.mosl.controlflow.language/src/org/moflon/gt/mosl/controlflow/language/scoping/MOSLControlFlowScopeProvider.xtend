@@ -51,7 +51,7 @@ class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider 
 		else if(searchForPattern(context))
 			return MOSLGTControlFlowUtil.instance.getScopeByPattern(context,reference, resolvingCache)
 	}catch (CannotFindScopeException e){
-		log.debug("Cannot find Scope",e)
+		log.error("Cannot find Scope",e)
 	}
 		super.getScope(context, reference);
 	}

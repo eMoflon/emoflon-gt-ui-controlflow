@@ -31,5 +31,6 @@ Export-Package: org.moflon.gt.mosl.controlflow.language,
  org.moflon.gt.mosl.controlflow.language.parser.antlr,
  org.moflon.gt.mosl.controlflow.language.moslControlFlow.util,
  org.moflon.gt.mosl.controlflow.language.moslControlFlow,
- org.moflon.gt.mosl.controlflow.language.moslControlFlow.impl
+ org.moflon.gt.mosl.controlflow.language.moslControlFlow.impl,
+ org.moflon.gt.mosl.controlflow.language.formatting2
 Import-Package: org.apache.log4j
