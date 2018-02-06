@@ -4,12 +4,11 @@
       label="eMoflon MOSL Control Flow Specification Language Feature"
       version="1.0.0.qualifier"
       provider-name="eMoflon Developers"
-      plugin="org.moflon.core.branding"
-      >
+      plugin="org.moflon.core.branding">
 
    <requires>
-      <import feature="org.moflon.ide.feature" version="2.32.0"/>
-      <import feature="org.moflon.gt.mosl.pattern.language.feature" version="1.0.0.qualifier"/>
+      <import feature="org.moflon.gt.mosl.pattern.language.feature" version="1.0.0.qualifier" match="greaterOrEqual"/>
+      <import feature="org.moflon.core.feature" version="1.0.0.qualifier" match="greaterOrEqual"/>
    </requires>
 
    <plugin
