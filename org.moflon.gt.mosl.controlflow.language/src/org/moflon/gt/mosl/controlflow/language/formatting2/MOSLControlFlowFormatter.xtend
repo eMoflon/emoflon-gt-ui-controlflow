@@ -50,15 +50,18 @@ class MOSLControlFlowFormatter extends AbstractFormatter2 {
 		if(statement instanceof NextStatement){
 			statement.next.format(document)
 		}
+		if(statement instanceof ConditionContainingStatement){
+			statement.formatStatement(document)
+		}
 	}
 	
-	def dispatch void format(LoopStatement loopStatement, extension IFormattableDocument document){
+	def dispatch void formatStatement(LoopStatement loopStatement, extension IFormattableDocument document){
 		loopStatement.regionFor.keyword(BRACE_LEFT).append[newLine].append[indent]
 		loopStatement.loopStartStatement.format(document)
 		loopStatement.regionFor.keyword(BRACE_RIGHT).append[newLine]
 	}
 	
-	def dispatch void format(ConditionStatement stmnt, extension IFormattableDocument document){
+	def dispatch void formatStatement(ConditionStatement stmnt, extension IFormattableDocument document){
 		stmnt.regionFor.keyword(BRACE_LEFT).append[newLine].append[indent]
 		stmnt.thenStartStatement.format(document)
 		stmnt.regionFor.keyword(BRACE_RIGHT).append[newLine]
