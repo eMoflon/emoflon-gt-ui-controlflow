@@ -38,6 +38,11 @@
       <layout>p2</layout>
       <url>http://emoflon.org/updatesites/emoflon-core/updatesite/</url>
     </repository>
+    <repository>
+      <id>emoflon-gt-ui-pattern-snapshots</id>
+      <layout>p2</layout>
+      <url>https://github.com/eMoflon/emoflon-gt-snapshots/raw/master/emoflon-gt-ui-pattern/updatesite</url>
+    </repository>
   </repositories>
   <pluginRepositories>
     <pluginRepository>
