@@ -17,7 +17,9 @@ Require-Bundle: org.eclipse.xtext,
  org.eclipse.emf.common,
  org.moflon.core.utilities,
  org.moflon.sdm.compiler.eclipse,
- org.moflon.ide.mosl.core
+ org.moflon.gt.mosl.ide.core,
+ org.eclipse.xtend;bundle-version="2.2.0",
+ org.eclipse.xtend.core;bundle-version="2.12.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.moflon.gt.mosl.controlflow.language,
  org.moflon.gt.mosl.controlflow.language.serializer,
@@ -29,5 +31,6 @@ Export-Package: org.moflon.gt.mosl.controlflow.language,
  org.moflon.gt.mosl.controlflow.language.parser.antlr,
  org.moflon.gt.mosl.controlflow.language.moslControlFlow.util,
  org.moflon.gt.mosl.controlflow.language.moslControlFlow,
- org.moflon.gt.mosl.controlflow.language.moslControlFlow.impl
+ org.moflon.gt.mosl.controlflow.language.moslControlFlow.impl,
+ org.moflon.gt.mosl.controlflow.language.formatting2
 Import-Package: org.apache.log4j

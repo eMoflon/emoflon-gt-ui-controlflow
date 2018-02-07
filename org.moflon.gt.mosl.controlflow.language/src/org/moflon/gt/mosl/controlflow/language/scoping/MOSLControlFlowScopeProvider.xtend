@@ -3,7 +3,6 @@
  */
 package org.moflon.gt.mosl.controlflow.language.scoping
 
-import org.moflon.ide.mosl.core.scoping.ScopeProviderHelper
 import org.eclipse.emf.ecore.EPackage
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
@@ -11,21 +10,22 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.CalledPatternParameter
-import org.moflon.ide.mosl.core.exceptions.CannotFindScopeException
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.MethodDec
+import org.moflon.codegen.eclipse.CodeGeneratorPlugin
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.GraphTransformationControlFlowFile
 import org.eclipse.emf.common.util.URI
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.EClassDef
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.ObjectVariableStatement
-import org.moflon.core.utilities.eMoflonEMFUtil
 
 import org.moflon.gt.mosl.pattern.language.moslPattern.GraphTransformationPatternFile
-import org.moflon.ide.mosl.core.scoping.utils.MOSLScopeUtil
 import java.util.HashMap
 import java.util.List
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.PatternReference
 import org.moflon.gt.mosl.controlflow.language.utils.MOSLGTControlFlowUtil
 import org.eclipse.emf.ecore.EParameter
+import org.moflon.gt.mosl.ide.core.exceptions.CannotFindScopeException
+import org.moflon.gt.mosl.ide.core.scoping.ScopeProviderHelper
+import org.moflon.gt.mosl.ide.core.scoping.utils.MOSLScopeUtil
 
 /**
  * This class contains custom scoping description.
@@ -51,7 +51,7 @@ class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider 
 		else if(searchForPattern(context))
 			return MOSLGTControlFlowUtil.instance.getScopeByPattern(context,reference, resolvingCache)
 	}catch (CannotFindScopeException e){
-		log.debug("Cannot find Scope",e)
+		log.error("Cannot find Scope",e)
 	}
 		super.getScope(context, reference);
 	}
@@ -71,7 +71,7 @@ class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider 
 
 	def getScopeByType(EObject context, Class<? extends EObject> type)throws CannotFindScopeException{
 		val set = scopeEPackageHelper.resourceSet
-		eMoflonEMFUtil.createPluginToResourceMapping(set);
+		CodeGeneratorPlugin.createPluginToResourceMapping(set);
 		var gtf = MOSLScopeUtil.instance.getRootObject(context, GraphTransformationControlFlowFile)//getGraphTransformationControlFlowFile(context)
 		var uris = gtf.imports.map[importValue | URI.createURI(importValue.name)];
 		return scopeEPackageHelper.createScope(uris, EPackage, type);

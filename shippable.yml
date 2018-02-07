@@ -1,0 +1,21 @@
+language: none
+
+build:
+  pre_ci_boot:
+    image_name: emoflon/emoflon-ci-from-github
+    image_tag: latest
+    pull: true
+
+  ci:
+    - mvn clean compile integration-test
+    # Publish JUnit test results
+    - find . -path "*/target/*/TEST*.xml" -exec cp {} /root/src/github.com/eMoflon/emoflon-gt-ui-controlflow/shippable/testresults/ \;
+   
+integrations:
+  # See http://docs.shippable.com/ci/email-notifications/
+  notifications:
+    - integrationName: email
+      type: email
+      sendConsoleLogs: true
+      recipients:
+        --last_committer
