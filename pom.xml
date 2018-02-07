@@ -33,6 +33,11 @@
       <layout>p2</layout>
       <url>http://emoflon.org/eclipse-plugin/beta/updatesite/</url>
     </repository>
+    <repository>
+      <id>emoflon-core</id>
+      <layout>p2</layout>
+      <url>http://emoflon.org/updatesites/emoflon-core/updatesite/</url>
+    </repository>
   </repositories>
   <pluginRepositories>
     <pluginRepository>
