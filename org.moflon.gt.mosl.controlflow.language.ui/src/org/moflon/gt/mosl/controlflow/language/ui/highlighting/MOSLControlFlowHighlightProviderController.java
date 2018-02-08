@@ -8,7 +8,7 @@ import org.moflon.gt.mosl.ide.ui.highlighting.AbstractTokenMapper;
 public class MOSLControlFlowHighlightProviderController extends AbstractHighlightProviderController {
 
 	public MOSLControlFlowHighlightProviderController(Class<? extends AbstractTokenMapper> tokenClass) {
-		super(tokenClass);
+		super(MOSLControlFlowAutoFactory.class,tokenClass);
 	}
 
 	@Override
