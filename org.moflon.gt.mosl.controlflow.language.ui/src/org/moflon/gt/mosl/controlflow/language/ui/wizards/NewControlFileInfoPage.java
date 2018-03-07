@@ -1,8 +1,8 @@
 package org.moflon.gt.mosl.controlflow.language.ui.wizards;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.moflon.gt.ide.ui.wizards.AbstractNewFileInfoPage;
-import org.moflon.gt.ide.ui.wizards.WizardFileTemplate;
+import org.moflon.gt.mosl.ide.ui.wizards.AbstractNewFileInfoPage;
+import org.moflon.gt.mosl.ide.ui.wizards.WizardFileTemplate;
 
 public class NewControlFileInfoPage extends AbstractNewFileInfoPage {
 

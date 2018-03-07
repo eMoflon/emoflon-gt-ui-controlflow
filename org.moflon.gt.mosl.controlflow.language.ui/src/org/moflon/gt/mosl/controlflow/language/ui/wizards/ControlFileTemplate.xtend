@@ -1,8 +1,8 @@
 package org.moflon.gt.mosl.controlflow.language.ui.wizards
 
-import org.moflon.gt.ide.ui.wizards.WizardFileTemplate
 import org.eclipse.core.resources.IFile
 import org.eclipse.core.runtime.IPath
+import org.moflon.gt.mosl.ide.ui.wizards.WizardFileTemplate
 
 class ControlFileTemplate extends WizardFileTemplate {
 	
