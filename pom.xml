@@ -36,7 +36,7 @@
     <repository>
       <id>emoflon-core</id>
       <layout>p2</layout>
-      <url>http://emoflon.org/updatesites/emoflon-core/updatesite/</url>
+      <url>http://emoflon.org/emoflon-core-updatesite/stable/updatesite/</url>
     </repository>
     <repository>
       <id>emoflon-gt-ui-pattern-snapshots</id>
