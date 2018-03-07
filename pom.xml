@@ -39,6 +39,11 @@
       <url>http://emoflon.org/emoflon-core-updatesite/stable/updatesite/</url>
     </repository>
     <repository>
+      <id>plantuml</id>
+      <layout>p2</layout>
+      <url>http://files.idi.ntnu.no/publish/plantuml/repository/</url>
+    </repository>
+    <repository>
       <id>emoflon-gt-ui-pattern-snapshots</id>
       <layout>p2</layout>
       <url>https://github.com/eMoflon/emoflon-gt-snapshots/raw/master/emoflon-gt-ui-pattern/updatesite</url>
