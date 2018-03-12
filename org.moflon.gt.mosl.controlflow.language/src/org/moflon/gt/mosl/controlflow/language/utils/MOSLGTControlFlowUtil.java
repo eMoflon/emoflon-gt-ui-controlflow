@@ -16,9 +16,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.Scopes;
+import org.moflon.core.xtext.exceptions.CannotFindScopeException;
+import org.moflon.core.xtext.scoping.utils.MOSLScopeUtil;
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.GraphTransformationControlFlowFile;
-import org.moflon.gt.mosl.ide.core.exceptions.CannotFindScopeException;
-import org.moflon.gt.mosl.ide.core.scoping.utils.MOSLScopeUtil;
 import org.moflon.gt.mosl.pattern.language.moslPattern.GraphTransformationPatternFile;
 
 public class MOSLGTControlFlowUtil

@@ -23,9 +23,9 @@ import java.util.List
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.PatternReference
 import org.moflon.gt.mosl.controlflow.language.utils.MOSLGTControlFlowUtil
 import org.eclipse.emf.ecore.EParameter
-import org.moflon.gt.mosl.ide.core.exceptions.CannotFindScopeException
-import org.moflon.gt.mosl.ide.core.scoping.ScopeProviderHelper
-import org.moflon.gt.mosl.ide.core.scoping.utils.MOSLScopeUtil
+import org.moflon.core.xtext.exceptions.CannotFindScopeException
+import org.moflon.core.xtext.scoping.ScopeProviderHelper
+import org.moflon.core.xtext.scoping.utils.MOSLScopeUtil
 
 /**
  * This class contains custom scoping description.

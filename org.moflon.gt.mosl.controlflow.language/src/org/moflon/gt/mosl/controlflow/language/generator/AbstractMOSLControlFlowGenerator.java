@@ -20,9 +20,9 @@ import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.generator.AbstractGenerator;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IGeneratorContext;
+import org.moflon.core.xtext.scoping.utils.MOSLScopeUtil;
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.EClassDef;
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.GraphTransformationControlFlowFile;
-import org.moflon.gt.mosl.ide.core.scoping.utils.MOSLScopeUtil;
 
 public abstract class AbstractMOSLControlFlowGenerator extends AbstractGenerator
 {
