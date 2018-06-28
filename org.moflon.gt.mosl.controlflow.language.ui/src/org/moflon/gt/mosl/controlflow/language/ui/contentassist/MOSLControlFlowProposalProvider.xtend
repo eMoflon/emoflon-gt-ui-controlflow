@@ -3,7 +3,7 @@
  */
 package org.moflon.gt.mosl.controlflow.language.ui.contentassist
 
-
+import org.moflon.gt.mosl.controlflow.language.ui.contentassist.AbstractMOSLControlFlowProposalProvider
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
  * on how to customize the content assistant.

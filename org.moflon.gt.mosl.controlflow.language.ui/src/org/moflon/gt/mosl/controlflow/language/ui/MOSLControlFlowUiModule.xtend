@@ -4,6 +4,7 @@
 package org.moflon.gt.mosl.controlflow.language.ui
 
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
+import org.moflon.gt.mosl.controlflow.language.ui.AbstractMOSLControlFlowUiModule
 import org.moflon.gt.mosl.controlflow.language.ui.highlighting.MOSLControlFlowHighlightProviderController
 import org.moflon.gt.mosl.controlflow.language.ui.highlighting.MOSLControlFlowTokenMapper
 import com.google.inject.Binder

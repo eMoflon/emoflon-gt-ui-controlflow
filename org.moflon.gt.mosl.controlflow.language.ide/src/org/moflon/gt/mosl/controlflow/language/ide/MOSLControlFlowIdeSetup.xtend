@@ -7,7 +7,7 @@ import com.google.inject.Guice
 import org.eclipse.xtext.util.Modules2
 import org.moflon.gt.mosl.controlflow.language.MOSLControlFlowRuntimeModule
 import org.moflon.gt.mosl.controlflow.language.MOSLControlFlowStandaloneSetup
-
+import org.moflon.gt.mosl.controlflow.language.ide.MOSLControlFlowIdeModule
 /**
  * Initialization support for running Xtext languages as language servers.
  */

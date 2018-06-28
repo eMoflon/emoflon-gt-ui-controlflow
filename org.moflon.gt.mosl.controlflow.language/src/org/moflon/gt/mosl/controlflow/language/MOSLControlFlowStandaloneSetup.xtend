@@ -3,6 +3,7 @@
  */
 package org.moflon.gt.mosl.controlflow.language
 
+import org.moflon.gt.mosl.controlflow.language.MOSLControlFlowStandaloneSetupGenerated
 
 /**
  * Initialization support for running Xtext languages without Equinox extension registry.
