@@ -16,8 +16,6 @@ import org.moflon.gt.mosl.controlflow.language.moslControlFlow.GraphTransformati
 import org.eclipse.emf.common.util.URI
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.EClassDef
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.ObjectVariableStatement
-
-import org.moflon.gt.mosl.pattern.language.moslPattern.GraphTransformationPatternFile
 import java.util.HashMap
 import java.util.List
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.PatternReference
@@ -26,6 +24,7 @@ import org.eclipse.emf.ecore.EParameter
 import org.moflon.core.xtext.exceptions.CannotFindScopeException
 import org.moflon.core.xtext.scoping.ScopeProviderHelper
 import org.moflon.core.xtext.scoping.utils.MOSLScopeUtil
+import org.emoflon.ibex.gt.editor.gT.EditorGTFile
 
 /**
  * This class contains custom scoping description.
@@ -35,7 +34,7 @@ import org.moflon.core.xtext.scoping.utils.MOSLScopeUtil
  */
 class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider {
 	private static ScopeProviderHelper<EPackage> scopeEPackageHelper = new ScopeProviderHelper()
-	private var resolvingCache = new HashMap<GraphTransformationControlFlowFile, List<GraphTransformationPatternFile>>();
+	private var resolvingCache = new HashMap<GraphTransformationControlFlowFile, List<EditorGTFile>>();
 
 	private Logger log = Logger.getLogger(MOSLControlFlowScopeProvider.getClass());
 

@@ -27,6 +27,7 @@ import org.moflon.gt.mosl.controlflow.language.moslControlFlow.GraphTransformati
 public abstract class AbstractMOSLControlFlowGenerator extends AbstractGenerator
 {
 
+	
    @Override
    public void doGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context)
    {

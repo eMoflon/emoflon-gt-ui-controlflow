@@ -4,6 +4,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.ui.editor.utils.TextStyle;
+import org.emoflon.ibex.gt.editor.gT.EditorPattern;
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.PatternReference;
 import org.moflon.gt.mosl.ide.ui.highlighting.AbstractHighlightProviderController;
 import org.moflon.gt.mosl.ide.ui.highlighting.RegisterRule;

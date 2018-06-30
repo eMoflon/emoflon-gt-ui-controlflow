@@ -14,3 +14,4 @@ class MOSLControlFlowStandaloneSetup extends MOSLControlFlowStandaloneSetupGener
 		new MOSLControlFlowStandaloneSetup().createInjectorAndDoEMFRegistration()
 	}
 }
+
