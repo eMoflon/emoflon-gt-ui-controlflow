@@ -46,7 +46,7 @@ class ControlFileTemplate extends WizardFileTemplate {
 		* using session
 		*
 		* for every defined Patternfile you want to use:
-		* using "platform:/.../patternFile.mpt"
+		* using "platform:/.../patternFile.gt"
 		*/
 		
 		package «packageName»
