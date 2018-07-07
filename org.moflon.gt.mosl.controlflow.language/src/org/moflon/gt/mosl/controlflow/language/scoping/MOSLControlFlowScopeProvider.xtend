@@ -25,6 +25,10 @@ import org.moflon.core.xtext.exceptions.CannotFindScopeException
 import org.moflon.core.xtext.scoping.ScopeProviderHelper
 import org.moflon.core.xtext.scoping.utils.MOSLScopeUtil
 import org.emoflon.ibex.gt.editor.gT.EditorGTFile
+import org.eclipse.xtext.scoping.IScope
+import org.moflon.gt.mosl.controlflow.language.moslControlFlow.PatternStatement
+import org.eclipse.xtext.scoping.Scopes
+import java.util.ArrayList
 
 /**
  * This class contains custom scoping description.
@@ -39,21 +43,36 @@ class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider 
 	private Logger log = Logger.getLogger(MOSLControlFlowScopeProvider.getClass());
 
 	override getScope(EObject context, EReference reference) {
-	MOSLGTControlFlowUtil.instance.resolvePatterns(context, resolvingCache, scopeEPackageHelper.resourceSet)
-	try{
-		if(searchForEClass(context,reference)){
-			return getScopeByType(context, EClass)
+		MOSLGTControlFlowUtil.instance.resolvePatterns(context, resolvingCache, scopeEPackageHelper.resourceSet)
+		try{
+			if(searchForEClass(context,reference)){
+				return getScopeByType(context, EClass)
+			}
+			else if(searchForEClassifier(context,reference)){
+				return getScopeByType(context, EClassifier)
+			}
+			else if(searchForPattern(context))
+				return MOSLGTControlFlowUtil.instance.getScopeByPattern(context,reference, resolvingCache)
+			else if(searchForPatternParameter(context,reference))
+				return getScopeByPatternParameter(context,reference,resolvingCache)
+		}catch (CannotFindScopeException e){
+			log.error("Cannot find Scope",e)
 		}
-		else if(searchForEClassifier(context,reference)){
-			return getScopeByType(context, EClassifier)
-		}
-		else if(searchForPattern(context))
-			return MOSLGTControlFlowUtil.instance.getScopeByPattern(context,reference, resolvingCache)
-	}catch (CannotFindScopeException e){
-		log.error("Cannot find Scope",e)
-	}
 		super.getScope(context, reference);
 	}
+	
+	def boolean searchForPatternParameter(EObject context, EReference reference) {
+		return context instanceof PatternStatement && reference.name.equals("parameter");
+	}
+	
+	def IScope getScopeByPatternParameter(EObject context, EReference reference, HashMap<GraphTransformationControlFlowFile, List<EditorGTFile>> resolvingCache) {
+		val patternStmt = context as PatternStatement
+		val patternRef = patternStmt.patternReference
+		val pattern = patternRef.pattern
+		val patternList= new ArrayList()
+		patternList.add(pattern)
+		return Scopes.scopeFor(pattern.nodes,Scopes.scopeFor(patternList))
+		}
 
 	static def getScopeProviderHelper(){
 		scopeEPackageHelper
