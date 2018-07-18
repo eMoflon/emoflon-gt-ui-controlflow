@@ -11,6 +11,7 @@ import org.moflon.gt.mosl.ide.ui.highlighting.AbstractHighlightProviderControlle
 import org.moflon.gt.mosl.ide.ui.highlighting.RegisterRule;
 import org.moflon.gt.mosl.ide.ui.highlighting.rules.AbstractHighlightingRule;
 import org.moflon.gt.mosl.ide.ui.highlighting.utils.XtextColor;
+
 @RegisterRule
 public class MarkLocalStatementsHighlightingRule extends AbstractHighlightingRule {
 
@@ -38,13 +39,14 @@ public class MarkLocalStatementsHighlightingRule extends AbstractHighlightingRul
 	@Override
 	protected boolean getHighlightingConditions(EObject moslObject, INode node) {
 		String text = node.getText();
-		if(moslObject instanceof ObjectVariableStatement) {
-			
+		if (moslObject instanceof ObjectVariableStatement) {
+
 			ObjectVariableStatement objectVariableStatement = ObjectVariableStatement.class.cast(moslObject);
 			return objectVariableStatement.getName().equals(text);
-		} else if(moslObject instanceof CalledParameter) {
+		} else if (moslObject instanceof CalledParameter) {
 			CalledParameter calledParameter = CalledParameter.class.cast(moslObject);
-			return (calledParameter.getObject() != null && ETypedElement.class.cast(calledParameter.getObject()).getName().equals(text)) 
+			return (calledParameter.getObject() != null
+					&& ETypedElement.class.cast(calledParameter.getObject()).getName().equals(text))
 					|| (calledParameter.getCreate() != null && calledParameter.getCreate().getName().equals(text));
 		} else if (moslObject instanceof MethodParameter) {
 			MethodParameter methodParameter = MethodParameter.class.cast(moslObject);

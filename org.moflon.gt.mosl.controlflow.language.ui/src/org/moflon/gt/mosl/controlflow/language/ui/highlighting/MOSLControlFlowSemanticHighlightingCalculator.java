@@ -6,7 +6,7 @@ import org.moflon.gt.mosl.ide.ui.highlighting.AbstractSemanticHighlightingCalcul
 import com.google.inject.Inject;
 
 public class MOSLControlFlowSemanticHighlightingCalculator extends AbstractSemanticHighlightingCalculator {
-	
+
 	@Inject
 	MOSLControlFlowGrammarAccess ga;
 }

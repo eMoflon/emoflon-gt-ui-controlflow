@@ -35,7 +35,7 @@ public class PatternNameItalicHighlightingRule extends AbstractHighlightingRule 
 
 	@Override
 	protected boolean getHighlightingConditions(EObject moslObject, INode node) {
-		if(moslObject instanceof PatternReference) {
+		if (moslObject instanceof PatternReference) {
 			String text = node.getText();
 			PatternReference patternReference = PatternReference.class.cast(moslObject);
 			return patternReference.getPattern().getName().equals(text);

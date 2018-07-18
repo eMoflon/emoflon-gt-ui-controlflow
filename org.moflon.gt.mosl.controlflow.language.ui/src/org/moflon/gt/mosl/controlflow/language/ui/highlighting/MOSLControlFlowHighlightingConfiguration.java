@@ -13,5 +13,5 @@ public class MOSLControlFlowHighlightingConfiguration extends AbstractHighlighti
 		ts.setColor(colorManager.getColor(XtextColor.GRAY));
 		return ts;
 	}
-	
+
 }

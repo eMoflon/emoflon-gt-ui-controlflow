@@ -1,7 +1,6 @@
 package org.moflon.gt.mosl.controlflow.language.ui.highlighting;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.moflon.gt.mosl.ide.ui.highlighting.HighlightAutoFactory;
@@ -11,7 +10,6 @@ public class MOSLControlFlowAutoFactory extends HighlightAutoFactory {
 
 	@Override
 	protected List<Class<? extends AbstractHighlightingRule>> manuallyLoadedClasses() {
-		//return Arrays.asList(HandleThisHighlightingRule.class);
 		return new ArrayList<Class<? extends AbstractHighlightingRule>>();
 	}
 }

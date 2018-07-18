@@ -14,9 +14,9 @@ import org.eclipse.emf.ecore.EClassifier;
 
 public abstract class BaseMOSLControlFlowValidator extends AbstractMOSLControlFlowValidator {
 	private Map<EClassifier, Collection<EClassifier>> typeCache = new HashMap<>();
-	
+
 	protected boolean isInstanceOf(EClassifier src, EClassifier trg) {
-		Collection<? extends EClassifier> types=typeCache.getOrDefault(src, findAllTypes(src));
+		Collection<? extends EClassifier> types = typeCache.getOrDefault(src, findAllTypes(src));
 		return types.contains(trg);
 	}
 
@@ -29,7 +29,8 @@ public abstract class BaseMOSLControlFlowValidator extends AbstractMOSLControlFl
 			types.add(eClassifier);
 			while (!stack.empty()) {
 				EClass current = stack.pop();
-				List<EClass> superTypes = current.getEAllSuperTypes().parallelStream().filter(eClass -> !types.contains(eClass)).collect(Collectors.toList());
+				List<EClass> superTypes = current.getEAllSuperTypes().parallelStream()
+						.filter(eClass -> !types.contains(eClass)).collect(Collectors.toList());
 				types.addAll(superTypes);
 				stack.addAll(superTypes);
 			}
