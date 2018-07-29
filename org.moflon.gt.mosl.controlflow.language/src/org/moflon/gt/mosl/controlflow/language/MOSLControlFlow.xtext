@@ -35,14 +35,15 @@ MethodDec:
 //
 //CalledPatternParameter:object=[TypedElement | QualifiedName] | create= ObjectVariableStatement;
 //CalledPatternParameter: (parameter = [ibexPattern::EditorNode]) |(parameter = [ibexPattern::EditorParameter]) '=' object=[TypedElement | QualifiedName] | create= ObjectVariableStatement;
-CalledPatternParameter: parameter = [ibexPattern::EditorNode | QualifiedName] '=' object=[TypedElement | QualifiedName] | create= ObjectVariableStatement;
+//CalledPatternParameter: parameter = [ibexPattern::EditorNode | QualifiedName] '=' object=[TypedElement | QualifiedName] | create= ObjectVariableStatement;
+CalledPatternParameter: (parameter = [ibexPattern::EditorNode | QualifiedName]) | (parameter = [ibexPattern::EditorParameter | QualifiedName])  '=' object=[TypedElement | QualifiedName] | create= ObjectVariableStatement;
 
 ObjectVariableStatement:(op = Operator)? name = ID ':' eType = [ecore::EClass | QualifiedName] (':=' assignment=[ObjectVariableStatement | QualifiedName])?;
 
 Statement: NextStatement | ReturnStatement;
 
 NextStatement:(PatternStatement | ConditionContainingStatement| ObjectVariableStatement| CallStatement ) (next = Statement)?;
-
+//TODO: possibly need to create alternative to CalledPatternParameter
 PatternStatement:'invoke' patternReference=PatternReference '('(parameters+=CalledPatternParameter)? (',' parameters+=CalledPatternParameter)*')';
 
 ConditionStatement:'if' '(' cond=Condition ')''{'
