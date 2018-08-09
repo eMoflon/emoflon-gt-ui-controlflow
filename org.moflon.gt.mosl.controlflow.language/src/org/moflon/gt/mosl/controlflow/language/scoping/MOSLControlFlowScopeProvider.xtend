@@ -43,7 +43,7 @@ class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider 
 	private Logger log = Logger.getLogger(MOSLControlFlowScopeProvider.getClass());
 
 	override getScope(EObject context, EReference reference) {
-		MOSLGTControlFlowUtil.instance.resolvePatterns(context, resolvingCache, scopeEPackageHelper.resourceSet)
+		MOSLGTControlFlowUtil.resolvePatterns(context, resolvingCache, scopeEPackageHelper.resourceSet)
 		try{
 			if(searchForEClass(context,reference)){
 				return getScopeByType(context, EClass)
@@ -52,7 +52,7 @@ class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider 
 				return getScopeByType(context, EClassifier)
 			}
 			else if(searchForPattern(context))
-				return MOSLGTControlFlowUtil.instance.getScopeByPattern(context,reference, resolvingCache)
+				return MOSLGTControlFlowUtil.getScopeByPattern(context,reference, resolvingCache)
 			else if(searchForPatternParameter(context,reference))
 				return getScopeByPatternParameter(context,reference,resolvingCache)
 		}catch (CannotFindScopeException e){
@@ -60,11 +60,11 @@ class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider 
 		}
 		super.getScope(context, reference);
 	}
-	
+
 	def boolean searchForPatternParameter(EObject context, EReference reference) {
 		return context instanceof PatternStatement && reference.name.equals("parameter");
 	}
-	
+
 	def IScope getScopeByPatternParameter(EObject context, EReference reference, HashMap<GraphTransformationControlFlowFile, List<EditorGTFile>> resolvingCache) {
 		val patternStmt = context as PatternStatement
 		val patternRef = patternStmt.patternReference

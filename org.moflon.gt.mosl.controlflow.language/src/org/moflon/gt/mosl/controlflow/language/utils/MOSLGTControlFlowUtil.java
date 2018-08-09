@@ -22,12 +22,7 @@ import org.moflon.core.xtext.scoping.utils.MOSLScopeUtil;
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.GraphTransformationControlFlowFile;
 
 public class MOSLGTControlFlowUtil {
-	public static MOSLGTControlFlowUtil instance = new MOSLGTControlFlowUtil();
-
-	private MOSLGTControlFlowUtil() {
-	}
-
-	public IScope getScopeByPattern(EObject context, EReference reference,
+	public static IScope getScopeByPattern(EObject context, EReference reference,
 			Map<GraphTransformationControlFlowFile, List<EditorGTFile>> resolvingCache)
 			throws CannotFindScopeException {
 		GraphTransformationControlFlowFile gtf = MOSLScopeUtil.getInstance().getRootObject(context,
@@ -41,13 +36,13 @@ public class MOSLGTControlFlowUtil {
 		return Scopes.scopeFor(candidates);
 	}
 
-	private <O extends EObject> List<O> getElements(Iterator<O> iterator, EClassifier type) {
+	private static <O extends EObject> List<O> getElements(Iterator<O> iterator, EClassifier type) {
 		List<O> lst = new ArrayList<>();
 		iterator.forEachRemaining(lst::add);
 		return lst.stream().filter(o -> o.eClass().equals(type)).collect(Collectors.toList());
 	}
 
-	public void resolvePatterns(EObject context,
+	public static void resolvePatterns(EObject context,
 			Map<GraphTransformationControlFlowFile, List<EditorGTFile>> resolvingCache, ResourceSet resSet) {
 		GraphTransformationControlFlowFile cfFile = MOSLScopeUtil.getInstance().getRootObject(context,
 				GraphTransformationControlFlowFile.class);
