@@ -3,32 +3,36 @@
  */
 package org.moflon.gt.mosl.controlflow.language.scoping
 
-import org.eclipse.emf.ecore.EPackage
-import org.apache.log4j.Logger
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EClassifier
-import org.moflon.gt.mosl.controlflow.language.moslControlFlow.CalledPatternParameter
-import org.moflon.gt.mosl.controlflow.language.moslControlFlow.MethodDec
-import org.moflon.core.utilities.eMoflonEMFUtil
-import org.moflon.gt.mosl.controlflow.language.moslControlFlow.GraphTransformationControlFlowFile
-import org.eclipse.emf.common.util.URI
-import org.moflon.gt.mosl.controlflow.language.moslControlFlow.EClassDef
-import org.moflon.gt.mosl.controlflow.language.moslControlFlow.ObjectVariableStatement
+import java.io.IOException
+import java.util.ArrayList
+import java.util.Collections
 import java.util.HashMap
 import java.util.List
-import org.moflon.gt.mosl.controlflow.language.moslControlFlow.PatternReference
-import org.moflon.gt.mosl.controlflow.language.utils.MOSLGTControlFlowUtil
+import org.apache.log4j.Logger
+import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EParameter
-import org.moflon.core.xtext.exceptions.CannotFindScopeException
-import org.moflon.core.xtext.scoping.ScopeProviderHelper
-import org.emoflon.ibex.gt.editor.gT.EditorGTFile
+import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.xtext.EcoreUtil2
 import org.eclipse.xtext.scoping.IScope
-import org.moflon.gt.mosl.controlflow.language.moslControlFlow.PatternStatement
 import org.eclipse.xtext.scoping.Scopes
-import java.util.ArrayList
+import org.emoflon.ibex.gt.editor.gT.EditorGTFile
+import org.moflon.core.utilities.eMoflonEMFUtil
+import org.moflon.core.xtext.exceptions.CannotFindScopeException
+import org.moflon.core.xtext.scoping.MoflonSimpleScope
 import org.moflon.core.xtext.utils.ResourceUtil
+import org.moflon.gt.mosl.controlflow.language.moslControlFlow.CalledPatternParameter
+import org.moflon.gt.mosl.controlflow.language.moslControlFlow.EClassDef
+import org.moflon.gt.mosl.controlflow.language.moslControlFlow.GraphTransformationControlFlowFile
+import org.moflon.gt.mosl.controlflow.language.moslControlFlow.MethodDec
+import org.moflon.gt.mosl.controlflow.language.moslControlFlow.ObjectVariableStatement
+import org.moflon.gt.mosl.controlflow.language.moslControlFlow.PatternReference
+import org.moflon.gt.mosl.controlflow.language.moslControlFlow.PatternStatement
+import org.moflon.gt.mosl.controlflow.language.utils.MOSLGTControlFlowUtil
 
 /**
  * This class contains custom scoping description.
@@ -37,70 +41,98 @@ import org.moflon.core.xtext.utils.ResourceUtil
  * on how and when to use it.
  */
 class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider {
-	private static ScopeProviderHelper<EPackage> scopeEPackageHelper = new ScopeProviderHelper()
-	private var resolvingCache = new HashMap<GraphTransformationControlFlowFile, List<EditorGTFile>>();
+// private static ScopeProviderHelper<EPackage> scopeEPackageHelper = new ScopeProviderHelper()
+    private var resolvingCache = new HashMap<GraphTransformationControlFlowFile, List<EditorGTFile>>();
 
-	private Logger log = Logger.getLogger(MOSLControlFlowScopeProvider.getClass());
+    private Logger log = Logger.getLogger(MOSLControlFlowScopeProvider.getClass());
 
-	override getScope(EObject context, EReference reference) {
-		MOSLGTControlFlowUtil.resolvePatterns(context, resolvingCache, scopeEPackageHelper.resourceSet)
-		try{
-			if(searchForEClass(context,reference)){
-				return getScopeByType(context, EClass)
-			}
-			else if(searchForEClassifier(context,reference)){
-				return getScopeByType(context, EClassifier)
-			}
-			else if(searchForPattern(context))
-				return MOSLGTControlFlowUtil.getScopeByPattern(context,reference, resolvingCache)
-			else if(searchForPatternParameter(context,reference))
-				return getScopeByPatternParameter(context,reference,resolvingCache)
-		}catch (CannotFindScopeException e){
-			log.error("Cannot find Scope",e)
-		}
-		super.getScope(context, reference);
-	}
+    override getScope(EObject context, EReference reference) {
+        MOSLGTControlFlowUtil.resolvePatterns(context, resolvingCache, context.eResource.resourceSet)
+        try {
+            if (searchForEClass(context, reference)) {
+                return getScopeByType(context, EClass)
+            } else if (searchForEClassifier(context, reference)) {
+                return getScopeByType(context, EClassifier)
+            } else if (searchForPattern(context))
+                return MOSLGTControlFlowUtil.getScopeByPattern(context, reference, resolvingCache)
+            else if (searchForPatternParameter(context, reference))
+                return getScopeByPatternParameter(context, reference, resolvingCache)
+        } catch (CannotFindScopeException e) {
+            log.error("Cannot find Scope", e)
+        }
+        super.getScope(context, reference);
+    }
 
-	def boolean searchForPatternParameter(EObject context, EReference reference) {
-		return context instanceof PatternStatement && reference.name.equals("parameter");
-	}
+    def boolean searchForPatternParameter(EObject context, EReference reference) {
+        return context instanceof PatternStatement && reference.name.equals("parameter");
+    }
 
-	def IScope getScopeByPatternParameter(EObject context, EReference reference, HashMap<GraphTransformationControlFlowFile, List<EditorGTFile>> resolvingCache) {
-		val patternStmt = context as PatternStatement
-		val patternRef = patternStmt.patternReference
-		val pattern = patternRef.pattern
-		val patternList= new ArrayList()
-		patternList.add(pattern)
-		return Scopes.scopeFor(pattern.nodes,Scopes.scopeFor(patternList))
-		}
+    def IScope getScopeByPatternParameter(EObject context, EReference reference,
+        HashMap<GraphTransformationControlFlowFile, List<EditorGTFile>> resolvingCache) {
+        val patternStmt = context as PatternStatement
+        val patternRef = patternStmt.patternReference
+        val pattern = patternRef.pattern
+        val patternList = new ArrayList()
+        patternList.add(pattern)
+        return Scopes.scopeFor(pattern.nodes, Scopes.scopeFor(patternList))
+    }
 
-	static def getScopeProviderHelper(){
-		scopeEPackageHelper
-	}
+    def boolean searchForCalledPatternParameter(EObject context, EReference reference) {
+        return context instanceof CalledPatternParameter;
+    }
 
-	def boolean searchForCalledPatternParameter(EObject context, EReference reference) {
-		return context instanceof CalledPatternParameter;
-	}
+    def boolean searchForPattern(EObject context) {
+        return context instanceof PatternReference
+    }
 
+    def getScopeByType(EObject context, Class<? extends EObject> type) throws CannotFindScopeException{
+        val set = context.eResource.resourceSet
+        eMoflonEMFUtil.createPluginToResourceMapping(set);
+        var gtf = ResourceUtil.getRootObject(context, GraphTransformationControlFlowFile)
+        var uris = gtf.imports.map[importValue|URI.createURI(importValue.name)];
+        return createScope(uris, EPackage, type, set);
+    }
 
-	def boolean searchForPattern(EObject context) {
-		return context instanceof PatternReference
-	}
+    def boolean searchForEClass(EObject context, EReference reference) {
+        return context instanceof EClassDef
+    }
 
-	def getScopeByType(EObject context, Class<? extends EObject> type)throws CannotFindScopeException{
-		val set = scopeEPackageHelper.resourceSet
-		eMoflonEMFUtil.createPluginToResourceMapping(set);
-		var gtf = ResourceUtil.getRootObject(context, GraphTransformationControlFlowFile)
-		var uris = gtf.imports.map[importValue | URI.createURI(importValue.name)];
-		return scopeEPackageHelper.createScope(uris, EPackage, type);
-	}
+    def boolean searchForEClassifier(EObject context, EReference reference) {
+        return context instanceof MethodDec || context instanceof ObjectVariableStatement ||
+            (context instanceof EParameter && reference.name.equals("eType"))
+    }
 
-	def boolean searchForEClass(EObject context, EReference reference){
-		return context instanceof EClassDef
-	}
+    def EObject getScopingObject(URI uri, Class<? extends EObject> clazz, ResourceSet resourceSet) throws IOException{
 
-	def boolean searchForEClassifier(EObject context, EReference reference){
-		return context instanceof MethodDec ||  context instanceof ObjectVariableStatement
-		|| (context instanceof EParameter && reference.name.equals("eType"))
-	}
+        var res = resourceSet.getResource(uri, false);
+        if (res === null) {
+            res = resourceSet.createResource(uri);
+        }
+        res.load(Collections.EMPTY_MAP);
+        var scopingRoot = clazz.cast(res.getContents().get(0));
+        return scopingRoot;
+    }
+
+    def IScope createScope(List<URI> uris, Class<? extends EObject> clazz, Class<? extends EObject> type,
+        ResourceSet set) throws CannotFindScopeException{
+        return createScope(uris, clazz, type, null, set);
+    }
+
+    def <T extends EObject> IScope createScope(List<URI> uris, Class<? extends EObject> clazz, Class<T> type, List<T> currentFound,
+        ResourceSet set) throws CannotFindScopeException{
+        try {
+            var candidates = new ArrayList<EObject>();
+
+            for (URI uri : uris) {
+                var scopingObject = getScopingObject(uri, clazz, set);
+                candidates.addAll(EcoreUtil2.eAllOfType(scopingObject, type));
+            }
+            if (currentFound !== null) {
+                candidates.addAll(currentFound);
+            }
+            return new MoflonSimpleScope(candidates);
+        } catch (Exception e) {
+            throw new CannotFindScopeException("Cannot find Resource");
+        }
+    }
 }

@@ -46,22 +46,22 @@ public class MOSLGTControlFlowUtil {
 			Map<GraphTransformationControlFlowFile, List<EditorGTFile>> resolvingCache, ResourceSet resSet) {
 		GraphTransformationControlFlowFile cfFile = ResourceUtil.getRootObject(context,
 				GraphTransformationControlFlowFile.class);
-		if (!resolvingCache.containsKey(cfFile)) {
-			Resource cfFileRes = cfFile.eResource();
-			URI cfFileUri = cfFileRes.getURI();
-			List<String> cfFileUriParts = Arrays.asList(cfFileUri.toString().split("/"));
-			String cfFileURIStringPrefix = cfFileUriParts.stream().filter(part -> !part.endsWith(".mcf")).reduce("",
-					(a, b) -> a + b + "/");
+		// if (!resolvingCache.containsKey(cfFile)) {
+		Resource cfFileRes = cfFile.eResource();
+		URI cfFileUri = cfFileRes.getURI();
+		List<String> cfFileUriParts = Arrays.asList(cfFileUri.toString().split("/"));
+		String cfFileURIStringPrefix = cfFileUriParts.stream().filter(part -> !part.endsWith(".mcf")).reduce("",
+				(a, b) -> a + b + "/");
 
-			List<URI> patternUris = cfFile.getIncludedPatterns().stream()
-					.map(pattern -> URI.createURI(cfFileURIStringPrefix + pattern.getImportURI()))
-					.collect(Collectors.toList());
-			List<EditorGTFile> patternFiles = patternUris.stream()
-					.map(uri -> ResourceUtil.getObjectFromResourceSet(uri, resSet, EditorGTFile.class))
-					.collect(Collectors.toList());
-			patternFiles.parallelStream().filter(EObject::eIsProxy).forEach(EcoreUtil::resolveAll);
-			resolvingCache.put(cfFile, patternFiles);
-		}
+		List<URI> patternUris = cfFile.getIncludedPatterns().stream()
+				.map(pattern -> URI.createURI(cfFileURIStringPrefix + pattern.getImportURI()))
+				.collect(Collectors.toList());
+		List<EditorGTFile> patternFiles = patternUris.stream()
+				.map(uri -> ResourceUtil.getObjectFromResourceSet(uri, resSet, EditorGTFile.class))
+				.collect(Collectors.toList());
+		patternFiles.parallelStream().filter(EObject::eIsProxy).forEach(EcoreUtil::resolveAll);
+		resolvingCache.put(cfFile, patternFiles);
+		// }
 	}
 
 }
