@@ -42,7 +42,7 @@ public abstract class AbstractMOSLControlFlowGenerator extends AbstractGenerator
 		gtcf.getEClassifiers().addAll(classes);
 		update(gtcf);
 		URI uri = createURI(input, "model/generated", input.getURI().toString().split("/")[2] + ".ecore");
-		MOSLScopeUtil.getInstance().saveToResource(uri, input.getResourceSet(), gtcf);
+		MOSLScopeUtil.saveToResource(uri, input.getResourceSet(), gtcf);
 	}
 
 	private void update(EPackage ePackage) {

@@ -18,7 +18,6 @@ import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.Scopes;
 import org.emoflon.ibex.gt.editor.gT.EditorGTFile;
 import org.moflon.core.xtext.exceptions.CannotFindScopeException;
-import org.moflon.core.xtext.scoping.utils.MOSLScopeUtil;
 import org.moflon.core.xtext.utils.ResourceUtil;
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.GraphTransformationControlFlowFile;
 
@@ -26,7 +25,7 @@ public class MOSLGTControlFlowUtil {
 	public static IScope getScopeByPattern(EObject context, EReference reference,
 			Map<GraphTransformationControlFlowFile, List<EditorGTFile>> resolvingCache)
 			throws CannotFindScopeException {
-		GraphTransformationControlFlowFile gtf = ResourceUtil.getInstance().getRootObject(context,
+		GraphTransformationControlFlowFile gtf = ResourceUtil.getRootObject(context,
 				GraphTransformationControlFlowFile.class);
 		List<EditorGTFile> patternFiles = resolvingCache.getOrDefault(gtf, new ArrayList<>()).stream()
 				.collect(Collectors.toList());
@@ -45,7 +44,7 @@ public class MOSLGTControlFlowUtil {
 
 	public static void resolvePatterns(EObject context,
 			Map<GraphTransformationControlFlowFile, List<EditorGTFile>> resolvingCache, ResourceSet resSet) {
-		GraphTransformationControlFlowFile cfFile = ResourceUtil.getInstance().getRootObject(context,
+		GraphTransformationControlFlowFile cfFile = ResourceUtil.getRootObject(context,
 				GraphTransformationControlFlowFile.class);
 		if (!resolvingCache.containsKey(cfFile)) {
 			Resource cfFileRes = cfFile.eResource();
@@ -58,7 +57,7 @@ public class MOSLGTControlFlowUtil {
 					.map(pattern -> URI.createURI(cfFileURIStringPrefix + pattern.getImportURI()))
 					.collect(Collectors.toList());
 			List<EditorGTFile> patternFiles = patternUris.stream()
-					.map(uri -> ResourceUtil.getInstance().getObjectFromResourceSet(uri, resSet, EditorGTFile.class))
+					.map(uri -> ResourceUtil.getObjectFromResourceSet(uri, resSet, EditorGTFile.class))
 					.collect(Collectors.toList());
 			patternFiles.parallelStream().filter(EObject::eIsProxy).forEach(EcoreUtil::resolveAll);
 			resolvingCache.put(cfFile, patternFiles);

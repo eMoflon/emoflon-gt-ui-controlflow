@@ -23,12 +23,12 @@ import org.moflon.gt.mosl.controlflow.language.utils.MOSLGTControlFlowUtil
 import org.eclipse.emf.ecore.EParameter
 import org.moflon.core.xtext.exceptions.CannotFindScopeException
 import org.moflon.core.xtext.scoping.ScopeProviderHelper
-import org.moflon.core.xtext.scoping.utils.MOSLScopeUtil
 import org.emoflon.ibex.gt.editor.gT.EditorGTFile
 import org.eclipse.xtext.scoping.IScope
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.PatternStatement
 import org.eclipse.xtext.scoping.Scopes
 import java.util.ArrayList
+import org.moflon.core.xtext.utils.ResourceUtil
 
 /**
  * This class contains custom scoping description.
@@ -90,7 +90,7 @@ class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider 
 	def getScopeByType(EObject context, Class<? extends EObject> type)throws CannotFindScopeException{
 		val set = scopeEPackageHelper.resourceSet
 		eMoflonEMFUtil.createPluginToResourceMapping(set);
-		var gtf = MOSLScopeUtil.instance.getRootObject(context, GraphTransformationControlFlowFile)//getGraphTransformationControlFlowFile(context)
+		var gtf = ResourceUtil.getRootObject(context, GraphTransformationControlFlowFile)
 		var uris = gtf.imports.map[importValue | URI.createURI(importValue.name)];
 		return scopeEPackageHelper.createScope(uris, EPackage, type);
 	}
