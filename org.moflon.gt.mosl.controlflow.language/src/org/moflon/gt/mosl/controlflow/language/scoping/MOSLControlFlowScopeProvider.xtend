@@ -74,7 +74,10 @@ class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider 
         val pattern = patternRef.pattern
         val patternList = new ArrayList()
         patternList.add(pattern)
-        return Scopes.scopeFor(pattern.nodes, Scopes.scopeFor(patternList))
+        val targets=new ArrayList()
+        targets.addAll(pattern.nodes)
+        targets.addAll(pattern.parameters)
+        return Scopes.scopeFor(targets, Scopes.scopeFor(patternList))
     }
 
     def boolean searchForCalledPatternParameter(EObject context, EReference reference) {
