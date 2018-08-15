@@ -33,6 +33,8 @@ import org.moflon.gt.mosl.controlflow.language.moslControlFlow.ObjectVariableSta
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.PatternReference
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.PatternStatement
 import org.moflon.gt.mosl.controlflow.language.utils.MOSLGTControlFlowUtil
+import org.moflon.gt.mosl.controlflow.language.moslControlFlow.TypedElement
+import java.util.Map
 
 /**
  * This class contains custom scoping description.
@@ -53,10 +55,13 @@ class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider 
                 return getScopeByType(context, EClass)
             } else if (searchForEClassifier(context, reference)) {
                 return getScopeByType(context, EClassifier)
-            } else if (searchForPattern(context))
+            } else if (searchForPattern(context)){
                 return MOSLGTControlFlowUtil.getScopeByPattern(context, reference, resolvingCache)
-            else if (searchForPatternParameter(context, reference))
+            } else if (searchForPatternParameter(context, reference)){
                 return getScopeByPatternParameter(context, reference, resolvingCache)
+     		} else if(searchForTypedElement(context,reference)){
+                	return getScopeByTypedElement(context,reference)
+            }
         } catch (CannotFindScopeException e) {
             log.error("Cannot find Scope", e)
         }
@@ -67,8 +72,27 @@ class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider 
         return context instanceof PatternStatement && reference.name.equals("parameter");
     }
 
+	def boolean searchForTypedElement(EObject context, EReference reference){
+		 return context instanceof CalledPatternParameter && reference.name.equals("object");
+	}
+
+	def IScope getScopeByTypedElement(EObject context, EReference reference){
+		val candidates = new ArrayList()
+		var candidate= context.eContainer;
+		while(!(candidate instanceof MethodDec)){
+			if(candidate instanceof ObjectVariableStatement){
+				candidates.add(candidate as EObject)
+			}
+			candidate=candidate.eContainer;
+		}
+		val methodDec = candidate as MethodDec
+		methodDec.EParameters.forEach[ EParameter param | candidates.add(param as EObject) ]
+		return Scopes.scopeFor(candidates)
+	}
+		
+
     def IScope getScopeByPatternParameter(EObject context, EReference reference,
-        HashMap<GraphTransformationControlFlowFile, List<EditorGTFile>> resolvingCache) {
+        Map<GraphTransformationControlFlowFile, List<EditorGTFile>> resolvingCache) {
         val patternStmt = context as PatternStatement
         val patternRef = patternStmt.patternReference
         val pattern = patternRef.pattern
