@@ -18,9 +18,12 @@ import org.eclipse.emf.ecore.EParameter
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.xtext.EcoreUtil2
+import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
 import org.emoflon.ibex.gt.editor.gT.EditorGTFile
+import org.emoflon.ibex.gt.editor.gT.EditorParameterOrNode
+import org.emoflon.ibex.gt.editor.gT.EditorPattern
 import org.moflon.core.utilities.eMoflonEMFUtil
 import org.moflon.core.xtext.exceptions.CannotFindScopeException
 import org.moflon.core.xtext.scoping.MoflonSimpleScope
@@ -33,8 +36,6 @@ import org.moflon.gt.mosl.controlflow.language.moslControlFlow.ObjectVariableSta
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.PatternReference
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.PatternStatement
 import org.moflon.gt.mosl.controlflow.language.utils.MOSLGTControlFlowUtil
-import org.moflon.gt.mosl.controlflow.language.moslControlFlow.TypedElement
-import java.util.Map
 
 /**
  * This class contains custom scoping description.
@@ -58,7 +59,7 @@ class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider 
             } else if (searchForPattern(context)){
                 return MOSLGTControlFlowUtil.getScopeByPattern(context, reference, resolvingCache)
             } else if (searchForPatternParameter(context, reference)){
-                return getScopeByPatternParameter(context, reference, resolvingCache)
+                return getScopeByPatternParameter(context, reference)
      		} else if(searchForTypedElement(context,reference)){
                 	return getScopeByTypedElement(context,reference)
             }
@@ -89,19 +90,21 @@ class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider 
 		methodDec.EParameters.forEach[ EParameter param | candidates.add(param as EObject) ]
 		return Scopes.scopeFor(candidates)
 	}
-		
 
-    def IScope getScopeByPatternParameter(EObject context, EReference reference,
-        Map<GraphTransformationControlFlowFile, List<EditorGTFile>> resolvingCache) {
+
+    def IScope getScopeByPatternParameter(EObject context, EReference reference) {
+        //val rootElement = EcoreUtil2.getContainerOfType(context, GraphTransformationControlFlowFile)
         val patternStmt = context as PatternStatement
         val patternRef = patternStmt.patternReference
         val pattern = patternRef.pattern
-        val patternList = new ArrayList()
+        val patternList = <EditorPattern>newArrayList
         patternList.add(pattern)
-        val targets=new ArrayList()
+
+        val targets=<EditorParameterOrNode>newArrayList
         targets.addAll(pattern.nodes)
         targets.addAll(pattern.parameters)
-        return Scopes.scopeFor(targets, IScope.NULLSCOPE)
+        return Scopes.scopeFor(targets, [QualifiedName.create(pattern.name, it.name)], Scopes.scopeFor(patternList))
+        //return Scopes.scopeFor(targets, IScope.NULLSCOPE)
     }
 
     def boolean searchForCalledPatternParameter(EObject context, EReference reference) {

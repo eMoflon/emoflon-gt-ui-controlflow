@@ -35,15 +35,17 @@ Workflow {
 			serializer = {
 				generateStub = false
 			}
-			
+
 			formatter = {
 				generateStub = true
 				generateXtendStub = true
-			}			
-			
+			}
+
 			validator = {
 				// composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
 			}
+//			fragment = scoping.ImportNamespacesScopingFragment2 {}
+//          fragment = exporting.SimpleNamesFragment2 {}
 		}
 	}
     component = FileCreatorMwe2Component {
