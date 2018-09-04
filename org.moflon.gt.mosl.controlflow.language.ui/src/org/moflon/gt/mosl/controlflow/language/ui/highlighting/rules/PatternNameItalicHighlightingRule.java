@@ -39,7 +39,7 @@ public class PatternNameItalicHighlightingRule extends AbstractHighlightingRule 
 			String text = node.getText();
 			PatternReference patternReference = PatternReference.class.cast(moslObject);
 			if (patternReference.getPattern() != null)
-				return patternReference.getPattern().getName().equals(text);
+				return text.equals(patternReference.getPattern().getName());
 			else
 				return false;
 		}

@@ -18,7 +18,6 @@ import org.eclipse.emf.ecore.EParameter
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.xtext.EcoreUtil2
-import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
 import org.emoflon.ibex.gt.editor.gT.EditorGTFile
@@ -29,9 +28,11 @@ import org.moflon.core.xtext.exceptions.CannotFindScopeException
 import org.moflon.core.xtext.scoping.MoflonSimpleScope
 import org.moflon.core.xtext.utils.ResourceUtil
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.CalledPatternParameter
+import org.moflon.gt.mosl.controlflow.language.moslControlFlow.CalledPatternParameterName
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.EClassDef
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.GraphTransformationControlFlowFile
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.MethodDec
+import org.moflon.gt.mosl.controlflow.language.moslControlFlow.MoslControlFlowFactory
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.ObjectVariableStatement
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.PatternReference
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.PatternStatement
@@ -93,7 +94,6 @@ class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider 
 
 
     def IScope getScopeByPatternParameter(EObject context, EReference reference) {
-        //val rootElement = EcoreUtil2.getContainerOfType(context, GraphTransformationControlFlowFile)
         val patternStmt = context as PatternStatement
         val patternRef = patternStmt.patternReference
         val pattern = patternRef.pattern
@@ -103,8 +103,15 @@ class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider 
         val targets=<EditorParameterOrNode>newArrayList
         targets.addAll(pattern.nodes)
         targets.addAll(pattern.parameters)
-        return Scopes.scopeFor(targets, [QualifiedName.create(pattern.name, it.name)], Scopes.scopeFor(patternList))
-        //return Scopes.scopeFor(targets, IScope.NULLSCOPE)
+        val names = targets.map(target | createCalledPatternParameterName(target, patternStmt))
+        return Scopes.scopeFor(names)
+    }
+
+    def CalledPatternParameterName createCalledPatternParameterName(EditorParameterOrNode target, PatternStatement statement) {
+        val parameterName = MoslControlFlowFactory.eINSTANCE.createCalledPatternParameterName();
+        parameterName.name = target.name
+        statement.eResource.contents.add(parameterName)
+        return parameterName
     }
 
     def boolean searchForCalledPatternParameter(EObject context, EReference reference) {

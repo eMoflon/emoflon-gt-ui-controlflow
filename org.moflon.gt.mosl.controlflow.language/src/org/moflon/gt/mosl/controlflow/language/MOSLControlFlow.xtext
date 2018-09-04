@@ -32,11 +32,9 @@ MethodDec:
 		startStatement = Statement?
 	'}')?
 ;
-//
-//CalledPatternParameter:object=[TypedElement | QualifiedName] | create= ObjectVariableStatement;
-//CalledPatternParameter: (parameter = [ibexPattern::EditorNode]) |(parameter = [ibexPattern::EditorParameter]) '=' object=[TypedElement | QualifiedName] | create= ObjectVariableStatement;
-//CalledPatternParameter: parameter = [ibexPattern::EditorNode | QualifiedName] '=' object=[TypedElement | QualifiedName] | create= ObjectVariableStatement;
-CalledPatternParameter: (parameter = [ibexPattern::EditorParameterOrNode|QualifiedName]) '=' object=[TypedElement | QualifiedName] | create= ObjectVariableStatement;
+
+CalledPatternParameter: (parameter = CalledPatternParameterName) '=' object=[TypedElement | QualifiedName] | create= ObjectVariableStatement;
+CalledPatternParameterName: name=ID;
 
 ObjectVariableStatement:(op = Operator)? name = ID ':' eType = [ecore::EClass | QualifiedName] (':=' assignment=[ObjectVariableStatement | QualifiedName])?;
 
