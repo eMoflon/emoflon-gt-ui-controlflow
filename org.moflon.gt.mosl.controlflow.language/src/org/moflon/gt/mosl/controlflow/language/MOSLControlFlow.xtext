@@ -45,10 +45,10 @@ NextStatement:(PatternStatement | ConditionContainingStatement| ObjectVariableSt
 PatternStatement:'invoke' patternReference=PatternReference '('(parameters+=CalledPatternParameter)? (',' parameters+=CalledPatternParameter)*')';
 
 ConditionStatement:'if' '(' cond=Condition ')''{'
-	thenStartStatement = Statement
+	thenStartStatement = Statement ?
 	'}'
 	('else' '{'
-		elseStartStatement = Statement
+		elseStartStatement = Statement ?
 	'}')?
 ;
 
@@ -71,19 +71,19 @@ ConditionContainingStatement:ConditionStatement | LoopStatement;
 LoopStatement:DoLoopStatement | WhileLoopStatement| ForLoopStatement;
 
 WhileLoopStatement: 'while''(' cond=Condition ')''{'
-		loopStartStatement = Statement
+		loopStartStatement = Statement?
 	'}'
 ;
 
 DoLoopStatement: 'do' '{'
-	loopStartStatement = Statement
+	loopStartStatement = Statement?
 	'}' 'while' '(' cond=Condition ')'
 ;
 
 ForLoopStatement: 'for' '('
 	cond = Condition
 	')''{'
-		loopStartStatement = Statement
+		loopStartStatement = Statement ?
 	'}'
 ;
 
