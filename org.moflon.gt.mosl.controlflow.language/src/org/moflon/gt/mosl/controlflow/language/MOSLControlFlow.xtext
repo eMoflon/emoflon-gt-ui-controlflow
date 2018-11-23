@@ -87,7 +87,7 @@ ForLoopStatement: 'for' '('
 	'}'
 ;
 
-ReturnStatement:{ReturnStatement} 'return' (returnObject=[ObjectVariableStatement])?;
+ReturnStatement:{ReturnStatement} 'return' (obj=ReturnObject)?;
 
 MethodParameter: name = ID ':' eType=[ecore::EClassifier | QualifiedName];
 
@@ -114,13 +114,22 @@ Using:
 
 terminal OPERATOR_VALUE: '++'| '!' | '--';
 
-terminal DECIMAL: INT '.' INT;
-
-LiteralValue:
-	(STRING | ('-')?INT | ('-')?DECIMAL | BOOL)
+terminal INTEGER returns ecore::EInt:
+	'-'?INT
+;
+terminal FLOAT returns ecore::EFloat:
+	'-'?INT"."INT
 ;
 
-terminal BOOL:
+terminal NULL : 
+	'null';
+
+
+LiteralValue:
+	(STRING | INTEGER | FLOAT | BOOL | NULL)
+;
+
+terminal BOOL returns ecore::EBoolean:
 	'true' | 'false'
 ;
 
@@ -135,5 +144,10 @@ QualifiedName returns ecore::EString:
 //additional connections
 TypedElement:(ObjectVariableStatement | MethodParameter);
 
+TypedNamedObject: obj=[ObjectVariableStatement|QualifiedName];
+
 CalledParameter:CalledPatternParameter | CalledMethodParameter;
 
+LiteralExpression: val= LiteralValue;
+
+ReturnObject: (LiteralExpression|TypedNamedObject);
