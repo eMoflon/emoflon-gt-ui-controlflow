@@ -126,7 +126,7 @@ terminal NULL :
 
 
 LiteralValue:
-	(STRING | INTEGER | FLOAT | BOOL | NULL)
+	(INTEGER | FLOAT | BOOL | NULL)
 ;
 
 terminal BOOL returns ecore::EBoolean:
@@ -148,6 +148,6 @@ TypedNamedObject: obj=[ObjectVariableStatement|QualifiedName];
 
 CalledParameter:CalledPatternParameter | CalledMethodParameter;
 
-LiteralExpression: val= LiteralValue;
+LiteralExpression: val= LiteralValue | {StringConstant} val=STRING;
 
 ReturnObject: (LiteralExpression|TypedNamedObject);
