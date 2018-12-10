@@ -27,3 +27,4 @@ Export-Package: org.moflon.gt.mosl.controlflow.language.ui.internal,
  org.moflon.gt.mosl.controlflow.language.ui.contentassist,
  org.moflon.gt.mosl.controlflow.language.ui.quickfix
 Bundle-Activator: org.moflon.gt.mosl.controlflow.language.ui.internal.LanguageActivator
+Automatic-Module-Name: org.moflon.gt.mosl.controlflow.language.ui

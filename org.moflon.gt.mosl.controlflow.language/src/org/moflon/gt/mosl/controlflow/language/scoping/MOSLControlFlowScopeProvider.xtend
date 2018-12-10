@@ -45,10 +45,9 @@ import org.moflon.gt.mosl.controlflow.language.utils.MOSLGTControlFlowUtil
  * on how and when to use it.
  */
 class MOSLControlFlowScopeProvider extends AbstractMOSLControlFlowScopeProvider {
-// private static ScopeProviderHelper<EPackage> scopeEPackageHelper = new ScopeProviderHelper()
-    private var resolvingCache = new HashMap<GraphTransformationControlFlowFile, List<EditorGTFile>>();
+    var resolvingCache = new HashMap<GraphTransformationControlFlowFile, List<EditorGTFile>>();
 
-    private Logger log = Logger.getLogger(MOSLControlFlowScopeProvider.getClass());
+    Logger log = Logger.getLogger(MOSLControlFlowScopeProvider.getClass());
 
     override getScope(EObject context, EReference reference) {
         MOSLGTControlFlowUtil.resolvePatterns(context, resolvingCache, context.eResource.resourceSet)

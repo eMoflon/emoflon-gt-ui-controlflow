@@ -18,9 +18,9 @@ class MOSLControlFlowFormatter extends AbstractFormatter2 {
 
 	//@Inject extension MOSLControlFlowGrammarAccess
 
-	private static final String BRACE_LEFT = "{"
-	private static final String BRACE_RIGHT = "}"
-	private static final String COMMA = ","
+	static final String BRACE_LEFT = "{"
+	static final String BRACE_RIGHT = "}"
+	static final String COMMA = ","
 
 	def dispatch void format(GraphTransformationControlFlowFile gtcff, extension IFormattableDocument document) {
 		gtcff.imports.forEach[cfImport | cfImport.append[newLine]]
