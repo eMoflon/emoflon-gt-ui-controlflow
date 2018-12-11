@@ -3,7 +3,6 @@
  */
 package org.moflon.gt.mosl.controlflow.language
 
-
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
  */

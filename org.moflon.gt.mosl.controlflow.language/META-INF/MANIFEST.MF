@@ -8,16 +8,19 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtext.xbase,
  org.eclipse.equinox.common;bundle-version="3.5.0",
- org.moflon.gt.mosl.pattern.language,
- org.eclipse.xtext.xbase.lib,
- org.antlr.runtime,
+ org.eclipse.xtext.xbase.lib;bundle-version="2.12.0",
+ org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
  org.eclipse.xtext.util,
- org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib;bundle-version="2.12.0",
  org.eclipse.emf.ecore,
  org.eclipse.emf.common,
  org.moflon.core.utilities,
  org.moflon.sdm.compiler.eclipse,
- org.moflon.ide.mosl.core
+ org.moflon.core.xtext;bundle-version="2.0.0",
+ org.eclipse.xtend;bundle-version="2.2.0",
+ org.eclipse.xtend.core;bundle-version="2.12.0",
+ org.moflon.gt.mosl.controlflow.language,
+ org.emoflon.ibex.gt.editor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.moflon.gt.mosl.controlflow.language,
  org.moflon.gt.mosl.controlflow.language.serializer,
@@ -29,5 +32,7 @@ Export-Package: org.moflon.gt.mosl.controlflow.language,
  org.moflon.gt.mosl.controlflow.language.parser.antlr,
  org.moflon.gt.mosl.controlflow.language.moslControlFlow.util,
  org.moflon.gt.mosl.controlflow.language.moslControlFlow,
- org.moflon.gt.mosl.controlflow.language.moslControlFlow.impl
+ org.moflon.gt.mosl.controlflow.language.moslControlFlow.impl,
+ org.moflon.gt.mosl.controlflow.language.formatting2
 Import-Package: org.apache.log4j
+Automatic-Module-Name: org.moflon.gt.mosl.controlflow.language

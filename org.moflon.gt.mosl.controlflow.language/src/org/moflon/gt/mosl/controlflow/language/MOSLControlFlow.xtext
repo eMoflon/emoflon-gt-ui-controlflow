@@ -1,8 +1,7 @@
 grammar org.moflon.gt.mosl.controlflow.language.MOSLControlFlow with org.eclipse.xtext.common.Terminals
 
 generate moslControlFlow "http://www.moflon.org/gt/mosl/controlflow/language/MOSLControlFlow"
-import "http://www.moflon.org/gt/mosl/pattern/language/MOSLPattern" as moslPattern
-
+import "http://www.emoflon.org/ibex/gt/editor/GT" as ibexPattern
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
 GraphTransformationControlFlowFile:
@@ -15,7 +14,7 @@ GraphTransformationControlFlowFile:
 // EMF Connections
 EPackage returns ecore::EPackage: GraphTransformationControlFlowFile ;
 
-ETypedElement returns ecore::ETypedElement :ObjectVariableStatement;
+ETypedElement returns ecore::ETypedElement:ObjectVariableStatement;
 
 
 EOperation returns ecore::EOperation:MethodDec;
@@ -34,21 +33,22 @@ MethodDec:
 	'}')?
 ;
 
-CalledPatternParameter:object=[TypedElement | QualifiedName] | create= ObjectVariableStatement;
+CalledPatternParameter: (parameter = CalledPatternParameterName) '=' object=[TypedElement | QualifiedName] | create= ObjectVariableStatement;
+CalledPatternParameterName: name=ID;
 
 ObjectVariableStatement:(op = Operator)? name = ID ':' eType = [ecore::EClass | QualifiedName] (':=' assignment=[ObjectVariableStatement | QualifiedName])?;
 
 Statement: NextStatement | ReturnStatement;
 
 NextStatement:(PatternStatement | ConditionContainingStatement| ObjectVariableStatement| CallStatement ) (next = Statement)?;
-
+//TODO: possibly need to create alternative to CalledPatternParameter
 PatternStatement:'invoke' patternReference=PatternReference '('(parameters+=CalledPatternParameter)? (',' parameters+=CalledPatternParameter)*')';
 
 ConditionStatement:'if' '(' cond=Condition ')''{'
-	thenStartStatement = Statement
+	thenStartStatement = Statement ?
 	'}'
 	('else' '{'
-		elseStartStatement = Statement
+		elseStartStatement = Statement ?
 	'}')?
 ;
 
@@ -64,30 +64,30 @@ CalledMethodParameter:(object=[TypedElement | QualifiedName]) | create= ObjectVa
 
 Condition:patternReference=PatternReference '('(parameters+=CalledPatternParameter)? (',' parameters+=CalledPatternParameter)*')';
 
-PatternReference: module = [moslPattern::PatternModule] '::' pattern = [moslPattern::PatternDef];
+PatternReference: pattern = [ibexPattern::EditorPattern];
 
 ConditionContainingStatement:ConditionStatement | LoopStatement;
 
 LoopStatement:DoLoopStatement | WhileLoopStatement| ForLoopStatement;
 
 WhileLoopStatement: 'while''(' cond=Condition ')''{'
-		loopStartStatement = Statement
+		loopStartStatement = Statement?
 	'}'
 ;
 
 DoLoopStatement: 'do' '{'
-	loopStartStatement = Statement
+	loopStartStatement = Statement?
 	'}' 'while' '(' cond=Condition ')'
 ;
 
 ForLoopStatement: 'for' '('
 	cond = Condition
 	')''{'
-		loopStartStatement = Statement
+		loopStartStatement = Statement ?
 	'}'
 ;
 
-ReturnStatement:{ReturnStatement} 'return' (returnObject=[ObjectVariableStatement])?;
+ReturnStatement:{ReturnStatement} 'return' (obj=ReturnObject)?;
 
 MethodParameter: name = ID ':' eType=[ecore::EClassifier | QualifiedName];
 
@@ -114,13 +114,22 @@ Using:
 
 terminal OPERATOR_VALUE: '++'| '!' | '--';
 
-terminal DECIMAL: INT '.' INT;
-
-LiteralValue:
-	(STRING | ('-')?INT | ('-')?DECIMAL | BOOL)
+terminal INTEGER returns ecore::EInt:
+	'-'?INT
+;
+terminal FLOAT returns ecore::EFloat:
+	'-'?INT"."INT
 ;
 
-terminal BOOL:
+terminal NULL : 
+	'null';
+
+
+LiteralValue:
+	(INTEGER | FLOAT | BOOL | NULL)
+;
+
+terminal BOOL returns ecore::EBoolean:
 	'true' | 'false'
 ;
 
@@ -133,7 +142,12 @@ QualifiedName returns ecore::EString:
 ;
 
 //additional connections
-TypedElement:ObjectVariableStatement | MethodParameter;
+TypedElement:(ObjectVariableStatement | MethodParameter);
+
+TypedNamedObject: obj=[ObjectVariableStatement|QualifiedName];
 
 CalledParameter:CalledPatternParameter | CalledMethodParameter;
 
+LiteralExpression: val= LiteralValue | {StringConstant} val=STRING;
+
+ReturnObject: (LiteralExpression|TypedNamedObject);
