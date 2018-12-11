@@ -7,10 +7,10 @@ import org.eclipse.xtext.ui.editor.utils.TextStyle;
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.CalledParameter;
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.MethodParameter;
 import org.moflon.gt.mosl.controlflow.language.moslControlFlow.ObjectVariableStatement;
-import org.moflon.gt.mosl.ide.ui.highlighting.AbstractHighlightProviderController;
-import org.moflon.gt.mosl.ide.ui.highlighting.RegisterRule;
-import org.moflon.gt.mosl.ide.ui.highlighting.rules.AbstractHighlightingRule;
-import org.moflon.gt.mosl.ide.ui.highlighting.utils.XtextColor;
+import org.moflon.tie.gt.mosl.ide.ui.highlighting.AbstractHighlightProviderController;
+import org.moflon.tie.gt.mosl.ide.ui.highlighting.RegisterRule;
+import org.moflon.tie.gt.mosl.ide.ui.highlighting.rules.AbstractHighlightingRule;
+import org.moflon.tie.gt.mosl.ide.ui.highlighting.utils.XtextColor;
 
 @RegisterRule
 public class MarkLocalStatementsHighlightingRule extends AbstractHighlightingRule {

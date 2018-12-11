@@ -15,8 +15,8 @@ import com.google.inject.Binder
 @FinalFieldsConstructor
 class MOSLControlFlowUiModule extends AbstractMOSLControlFlowUiModule {
 	var controller = new MOSLControlFlowHighlightProviderController(MOSLControlFlowTokenMapper)
-	
-	override def configure (Binder binder){
+
+	override configure (Binder binder){
 		controller.bind(binder)
 		super.configure(binder)
 	}

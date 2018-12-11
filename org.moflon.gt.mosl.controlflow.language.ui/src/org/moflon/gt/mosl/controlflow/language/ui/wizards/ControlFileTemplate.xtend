@@ -2,32 +2,32 @@ package org.moflon.gt.mosl.controlflow.language.ui.wizards
 
 import org.eclipse.core.resources.IFile
 import org.eclipse.core.runtime.IPath
-import org.moflon.gt.mosl.ide.ui.wizards.WizardFileTemplate
+import org.moflon.tie.gt.mosl.ide.ui.wizards.WizardFileTemplate
 
 class ControlFileTemplate extends WizardFileTemplate {
-	
+
 	override setContent(IFile file) {
 		val project = file.project
 		val path = file.location.makeRelativeTo(project.location).removeFileExtension
 		val packageName = convertPathToPackageNotation(path)
 		val content = createTemplate(packageName)
-		save(file, content)		
+		save(file, content)
 	}
-	
+
 	def convertPathToPackageNotation(IPath path){
 		val pathString = path.toString
 		pathString.replaceAll("/", "\\.")
 	}
-	
+
 	def String createImportText(){
-			
+
 		'''
 		«FOR epackage : epackageImports»
 			import "«epackage.nsURI»"
 		«ENDFOR»
 		'''
 	}
-	
+
 	def String createTemplate(String packageName){
 		'''
 		/*
@@ -41,16 +41,16 @@ class ControlFileTemplate extends WizardFileTemplate {
 		* import "platform:/resource/something/ecoreFile.ecore"
 		*/
 		«createImportText»
-		
+
 		/*
 		* using session
 		*
 		* for every defined Patternfile you want to use:
 		* using "platform:/.../patternFile.gt"
 		*/
-		
+
 		package «packageName»
-		
+
 		// EClass declaration
 		'''
 	}

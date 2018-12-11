@@ -1,9 +1,9 @@
 package org.moflon.gt.mosl.controlflow.language.ui.highlighting;
 
-import org.moflon.gt.mosl.ide.ui.highlighting.AbstractHighlightProviderController;
-import org.moflon.gt.mosl.ide.ui.highlighting.AbstractHighlightingConfiguration;
-import org.moflon.gt.mosl.ide.ui.highlighting.AbstractSemanticHighlightingCalculator;
-import org.moflon.gt.mosl.ide.ui.highlighting.AbstractTokenMapper;
+import org.moflon.tie.gt.mosl.ide.ui.highlighting.AbstractHighlightProviderController;
+import org.moflon.tie.gt.mosl.ide.ui.highlighting.AbstractHighlightingConfiguration;
+import org.moflon.tie.gt.mosl.ide.ui.highlighting.AbstractSemanticHighlightingCalculator;
+import org.moflon.tie.gt.mosl.ide.ui.highlighting.AbstractTokenMapper;
 
 public class MOSLControlFlowHighlightProviderController extends AbstractHighlightProviderController {
 
